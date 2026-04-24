@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LinkSeguro</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Oswald:wght@400;700&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+
+<style>
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+scroll-behavior:smooth;
+}
+
+body{
+background:#02010d;
+color:#fff;
+font-family:Roboto,sans-serif;
+overflow-x:hidden;
+}
+
+/* BACKGROUND */
+body::before{
+content:"";
+position:fixed;
+inset:0;
+background:
+radial-gradient(circle at 80% 20%, rgba(255,0,0,.22), transparent 30%),
+radial-gradient(circle at 85% 35%, rgba(255,0,0,.15), transparent 20%),
+linear-gradient(135deg,#02010d,#030716,#02010d);
+z-index:-2;
+}
+
+body::after{
+content:"";
+position:fixed;
+inset:0;
+background-image:radial-gradient(circle, rgba(255,0,0,.28) 1px, transparent 1px);
+background-size:14px 14px;
+mask-image:radial-gradient(circle at 80% 30%, black 10%, transparent 70%);
+opacity:.35;
+z-index:-1;
+animation:bgMove 15s linear infinite;
+}
+
+@keyframes bgMove{
+0%{transform:translateY(0)}
+100%{transform:translateY(-80px)}
+}
+
+.container{
+max-width:1400px;
+margin:auto;
+padding:0 20px;
+}
+
+/* HEADER */
+header{
+height:95px;
+border-bottom:1px solid rgba(255,255,255,.08);
+backdrop-filter:blur(8px);
+position:sticky;
+top:0;
+z-index:999;
+background:rgba(2,1,13,.6);
+}
+
+.header-wrap{
+height:100%;
+display:flex;
+justify-content:space-between;
+align-items:center;
+}
+
+.logo{
+font-size:46px;
+font-family:Oswald,sans-serif;
+animation:fadeDown 1s ease;
+}
+
+.logo span{
+color:red;
+text-shadow:0 0 12px red;
+}
+
+nav{
+display:flex;
+gap:28px;
+}
+
+nav a{
+color:#fff;
+text-decoration:none;
+font-size:18px;
+position:relative;
+transition:.3s;
+}
+
+nav a:hover{
+color:red;
+}
+
+nav a::after{
+content:"";
+position:absolute;
+left:0;
+bottom:-6px;
+width:0;
+height:2px;
+background:red;
+transition:.3s;
+}
+
+nav a:hover::after{
+width:100%;
+}
+
+/* HERO */
+.hero{
+padding:70px 0;
+}
+
+.hero-wrap{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:30px;
+align-items:center;
+}
+
+.title-white{
+font-family:Anton,sans-serif;
+font-size:92px;
+line-height:.95;
+animation:slideLeft 1s ease;
+}
+
+.title-red{
+font-family:Anton,sans-serif;
+font-size:92px;
+line-height:.95;
+color:red;
+margin-top:10px;
+text-shadow:0 0 18px rgba(255,0,0,.5);
+animation:slideLeft 1.3s ease;
+}
+
+.hero p{
+margin-top:20px;
+font-size:22px;
+color:#ddd;
+line-height:1.5;
+animation:fadeUp 1.5s ease;
+}
+
+.hero p span{
+color:red;
+}
+
+.verify-box{
+margin-top:28px;
+display:flex;
+border:1px solid red;
+border-radius:14px;
+overflow:hidden;
+height:62px;
+max-width:720px;
+animation:fadeUp 1.8s ease;
+box-shadow:0 0 20px rgba(255,0,0,.1);
+}
+
+.verify-box input{
+flex:1;
+background:#08090d;
+border:none;
+color:#fff;
+padding:0 22px;
+font-size:16px;
+outline:none;
+}
+
+.verify-box button{
+width:190px;
+background:red;
+border:none;
+color:#fff;
+font-size:24px;
+font-family:Oswald,sans-serif;
+cursor:pointer;
+transition:.3s;
+}
+
+.verify-box button:hover{
+background:#ff2d2d;
+letter-spacing:1px;
+}
+
+.safe{
+margin-top:14px;
+font-size:15px;
+color:#9498a2;
+animation:fadeUp 2s ease;
+}
+
+/* RIGHT SIDE CARD */
+.visual{
+position:relative;
+min-height:430px;
+animation:float 5s ease-in-out infinite;
+}
+
+.card{
+position:absolute;
+width:430px;
+height:250px;
+background:linear-gradient(145deg,#111524,#070911);
+border-radius:18px;
+border:1px solid rgba(255,255,255,.08);
+border-right:4px solid red;
+top:20px;
+left:80px;
+transform:rotate(-6deg);
+box-shadow:0 25px 60px rgba(0,0,0,.55);
+}
+
+.browser{
+position:absolute;
+top:20px;
+left:20px;
+right:20px;
+height:46px;
+background:#121525;
+border-radius:12px;
+}
+
+.alert{
+position:absolute;
+top:90px;
+left:40px;
+right:40px;
+bottom:30px;
+background:linear-gradient(145deg,#26070c,#12050a);
+border-radius:18px;
+display:flex;
+align-items:center;
+justify-content:center;
+font-family:Anton,sans-serif;
+font-size:44px;
+color:red;
+text-shadow:0 0 20px red;
+animation:pulse 2s infinite;
+}
+
+.tag{
+position:absolute;
+width:170px;
+height:70px;
+background:#111523;
+border-radius:14px;
+display:flex;
+justify-content:center;
+align-items:center;
+font-size:22px;
+backdrop-filter:blur(8px);
+box-shadow:0 10px 25px rgba(0,0,0,.4);
+}
+
+.good{
+right:20px;
+top:140px;
+color:#00ffb3;
+animation:fadeRight 1.5s ease;
+}
+
+.bad{
+right:40px;
+top:260px;
+color:red;
+animation:fadeRight 2s ease;
+}
+
+/* SECTION */
+.section{
+padding:40px 0 80px;
+}
+
+.section h2{
+font-size:68px;
+font-weight:700;
+margin-bottom:10px;
+}
+
+.section h2 span{
+color:red;
+}
+
+.sub{
+font-size:24px;
+color:#9498a2;
+margin-bottom:35px;
+}
+
+/* GRID */
+.grid{
+display:grid;
+grid-template-columns:repeat(4,1fr);
+gap:22px;
+}
+
+.info-card{
+background:#0b0f1d;
+border:1px solid rgba(255,0,0,.4);
+border-radius:16px;
+padding:28px;
+transition:.35s;
+opacity:0;
+transform:translateY(40px);
+}
+
+.info-card.show{
+opacity:1;
+transform:translateY(0);
+}
+
+.info-card:hover{
+transform:translateY(-10px) scale(1.03);
+box-shadow:0 0 30px rgba(255,0,0,.15);
+border-color:red;
+}
+
+.icon{
+width:78px;
+height:78px;
+border-radius:50%;
+border:1px solid rgba(255,0,0,.5);
+display:flex;
+justify-content:center;
+align-items:center;
+font-size:34px;
+margin-bottom:18px;
+}
+
+.info-card h3{
+font-family:Oswald,sans-serif;
+font-size:32px;
+line-height:1.1;
+text-transform:uppercase;
+}
+
+.line{
+width:35px;
+height:2px;
+background:red;
+margin:12px 0;
+}
+
+.info-card p{
+color:#8d8d8d;
+font-size:18px;
+line-height:1.4;
+}
+
+/* MODAL */
+.modal-overlay{
+position:fixed;
+inset:0;
+background:rgba(0,0,0,.75);
+display:flex;
+justify-content:center;
+align-items:center;
+opacity:0;
+visibility:hidden;
+transition:.35s;
+z-index:9999;
+backdrop-filter:blur(6px);
+}
+
+.modal-overlay.active{
+opacity:1;
+visibility:visible;
+}
+
+.modal-box{
+width:90%;
+max-width:460px;
+background:linear-gradient(145deg,#0d1220,#06070d);
+padding:35px;
+border-radius:18px;
+border:1px solid rgba(255,0,0,.4);
+text-align:center;
+transform:scale(.8);
+transition:.35s;
+}
+
+.modal-overlay.active .modal-box{
+transform:scale(1);
+}
+
+.modal-icon{
+width:80px;
+height:80px;
+border-radius:50%;
+border:2px solid red;
+margin:auto;
+display:flex;
+justify-content:center;
+align-items:center;
+font-size:38px;
+margin-bottom:18px;
+}
+
+.modal-box h2{
+font-size:32px;
+margin-bottom:10px;
+}
+
+.modal-box p{
+color:#bbb;
+font-size:18px;
+line-height:1.5;
+margin-bottom:25px;
+}
+
+.modal-box button{
+background:red;
+border:none;
+padding:14px 28px;
+border-radius:10px;
+color:#fff;
+font-size:18px;
+cursor:pointer;
+transition:.3s;
+}
+
+.modal-box button:hover{
+transform:scale(1.05);
+}
+
+/* ANIMATIONS */
+@keyframes pulse{
+0%,100%{transform:scale(1)}
+50%{transform:scale(1.03)}
+}
+
+@keyframes float{
+0%,100%{transform:translateY(0)}
+50%{transform:translateY(-18px)}
+}
+
+@keyframes slideLeft{
+from{opacity:0;transform:translateX(-80px)}
+to{opacity:1;transform:translateX(0)}
+}
+
+@keyframes fadeRight{
+from{opacity:0;transform:translateX(60px)}
+to{opacity:1;transform:translateX(0)}
+}
+
+@keyframes fadeUp{
+from{opacity:0;transform:translateY(40px)}
+to{opacity:1;transform:translateY(0)}
+}
+
+@keyframes fadeDown{
+from{opacity:0;transform:translateY(-40px)}
+to{opacity:1;transform:translateY(0)}
+}
+
+/* RESPONSIVO */
+@media(max-width:1100px){
+.hero-wrap{grid-template-columns:1fr;}
+.visual{display:none;}
+.grid{grid-template-columns:repeat(2,1fr);}
+}
+
+@media(max-width:700px){
+nav{display:none;}
+.grid{grid-template-columns:1fr;}
+.title-white,.title-red{font-size:54px;}
+.section h2{font-size:42px;}
+.verify-box{flex-direction:column;height:auto;}
+.verify-box button{width:100%;height:60px;}
+}
+</style>
+</head>
+
+<body>
+
+<header>
+<div class="container header-wrap">
+<div class="logo">Link<span>Seguro</span></div>
+
+<nav>
+<a href="#">Inicio</a>
+<a href="#identificar">Identificar</a>
+<a href="#dicas">Dicas</a>
+</nav>
+</div>
+</header>
+
+<section class="hero">
+<div class="container hero-wrap">
+
+<div>
+<div class="title-white">NEM TUDO QUE VOCÊ VÊ</div>
+<div class="title-red">É VERDADE.</div>
+
+<p>
+Verifique links antes de compartilhar<br>
+e ajude a combater a <span>desinformação</span>.
+</p>
+
+<div class="verify-box">
+<input type="text" placeholder="Cole o link aqui para verificar...">
+<button onclick="verificarLink()">VERIFICAR</button>
+</div>
+
+<div class="safe">🔒 Não armazenamos seus dados. Verificação 100% segura.</div>
+</div>
+
+<div class="visual">
+<div class="card">
+<div class="browser"></div>
+<div class="alert">⚠ ALERTA</div>
+</div>
+
+<div class="tag good">🛡 Confiável</div>
+<div class="tag bad">🛑 Suspeito</div>
+</div>
+
+</div>
+</section>
+
+<section class="section container" id="identificar">
+<h2>Como Identificar <span>fake news?</span></h2>
+<p class="sub">Fique atento a esses sinais antes de acreditar ou compartilhar qualquer conteúdo.</p>
+
+<div class="grid">
+<div class="info-card"><div class="icon">📣</div><h3>Título Sensacionalista</h3><div class="line"></div><p>Desconfie de títulos exagerados e chamativos.</p></div>
+<div class="info-card"><div class="icon">🔍</div><h3>Fonte Desconhecida</h3><div class="line"></div><p>Verifique o site e quem publicou a notícia.</p></div>
+<div class="info-card"><div class="icon">🧠</div><h3>Apelo Emocional</h3><div class="line"></div><p>Notícias que usam medo ou raiva para manipular.</p></div>
+<div class="info-card"><div class="icon">🔗</div><h3>Link Estranho</h3><div class="line"></div><p>Cuidado com URLs estranhas ou encurtadas.</p></div>
+</div>
+</section>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modalOverlay">
+<div class="modal-box">
+<div class="modal-icon" id="modalIcon">✔</div>
+<h2 id="modalTitle">Resultado</h2>
+<p id="modalText">Mensagem aqui</p>
+<button onclick="fecharModal()">Fechar</button>
+</div>
+</div>
+
+<script>
+function verificarLink(){
+let valor=document.querySelector("input").value.trim();
+
+if(valor===""){
+abrirModal("⚠","Campo vazio","Cole um link antes de verificar.","#ffcc00");
+return;
+}
+
+if(valor.includes("g1")||valor.includes("uol")||valor.includes("bbc")||valor.includes("gov.br")){
+abrirModal("✔","Fonte Confiável","O link aparenta ser seguro e confiável.","#00ff99");
+}
+else if(valor.includes("bit.ly")||valor.includes("tinyurl")||valor.includes("@")){
+abrirModal("⚠","Link Suspeito","Este link apresenta sinais suspeitos.","#ffcc00");
+}
+else{
+abrirModal("✖","Possível Fake News","Não foi possível validar a origem.","#ff3b3b");
+}
+}
+
+function abrirModal(icon,title,text,color){
+let modal=document.getElementById("modalOverlay");
+let ic=document.getElementById("modalIcon");
+
+ic.innerHTML=icon;
+ic.style.color=color;
+ic.style.borderColor=color;
+
+document.getElementById("modalTitle").innerText=title;
+document.getElementById("modalText").innerText=text;
+
+modal.classList.add("active");
+}
+
+function fecharModal(){
+document.getElementById("modalOverlay").classList.remove("active");
+}
+
+document.getElementById("modalOverlay").addEventListener("click",function(e){
+if(e.target===this)fecharModal();
+});
+
+/* Scroll animation */
+const cards=document.querySelectorAll(".info-card");
+
+window.addEventListener("scroll",()=>{
+cards.forEach(card=>{
+let top=card.getBoundingClientRect().top;
+if(top < window.innerHeight-80){
+card.classList.add("show");
+}
+});
+});
+</script>
+
+</body>
+</html>
