@@ -13,7 +13,7 @@ O projeto une conhecimentos de segurança da informação com os fundamentos jur
 
 ## Como Executar
 
-1. Clone o repositório: `git clone https://https://github.com/Kalyel473/VerificadorDeNoticias.git`
+1. Clone o repositório: `git clone https://github.com/Kalyel473/VerificadorDeNoticias.git`
 2. Abra o arquivo `index.html` no navegador
 
 ## Integrantes
