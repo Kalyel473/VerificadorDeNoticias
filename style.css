@@ -188,6 +188,7 @@ nav a.active::after{width:100%;background:red;}
   gap:10px;
   flex-wrap:wrap;
   justify-content:center;
+  margin-top:5px;
 }
 
 .title-red .shield-check{
@@ -1055,6 +1056,40 @@ nav a.active::after{width:100%;background:red;}
   .hero-wrap{
     grid-template-columns:1fr 1fr;
     gap:40px;
+    align-items: start;
+  }
+
+  .hero{
+    padding: 52px 0 20px;
+  }
+
+  .hero-left{
+    text-align: left;
+    margin-bottom: 0;
+  }
+
+  .title-white{
+    font-size: clamp(30px, 7vw, 70px);
+  }
+
+  .title-red{
+    font-size: clamp(30px, 7vw, 70px);
+    justify-content: flex-start;
+    margin-top: 0;
+  }
+
+  .hero-sub{
+    margin-top: 12px;
+    font-size: 16px;
+  }
+
+  .verify-wrap{
+    margin-top: 16px;
+  }
+
+  .safe{
+    margin-top: 8px;
+    justify-content: flex-start;
   }
 
   .visual{
@@ -1274,15 +1309,15 @@ nav a.active::after{width:100%;background:red;}
     transform:rotate(8deg) scale(1.1);
   }
   .badge-safe{
-    right:-10px;
-    top:90px;
+    right: -10px;
+    top: 90px;
     color:#fff;
     animation:fadeRight 1.2s ease;
     border-color:rgba(0,200,150,.12);
   }
   .badge-danger{
-    right:10px;
-    top:228px;
+    right: 10px;
+    top: 228px;
     color:#fff;
     animation:fadeRight 1.8s ease;
     border-color:rgba(255,0,0,.12);
@@ -1310,6 +1345,14 @@ nav a.active::after{width:100%;background:red;}
   .info-card h3{font-size:22px;}
   .line{width:40px;margin:12px 0 16px;}
   .info-card p{font-size:15px;}
+
+  .section{
+    padding: 40px 0 80px;
+  }
+
+  #identificarSecao{
+    padding-top: 20px;
+  }
 }
 
 @media(min-width:1280px){
