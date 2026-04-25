@@ -10,17 +10,17 @@ const pasteHint = document.getElementById("pasteHint");
 // PEGA O INPUT DA URL (INTERATIVO)
 const urlTextInput = document.getElementById("urlText");
 
-// PERMITE EDITAR O TEXTO DA URL (já está funcionando, mas vamos garantir)
+// PERMITE EDITAR O TEXTO DA URL
 if (urlTextInput) {
   urlTextInput.addEventListener("keypress", function(e) {
     if (e.key === "Enter") {
-      this.blur(); // tira o foco ao apertar Enter
+      this.blur();
     }
   });
 }
 
 // -------------------------------
-// COLAR OU CLICAR
+// COLAR LINK
 // -------------------------------
 async function colarLink() {
   try {
@@ -133,140 +133,63 @@ window.addEventListener("scroll", updateActiveOnScroll);
 updateActiveOnScroll();
 
 // -------------------------------
-// ICONES SVG MODAL
+// ÍCONES DO MODAL
 // -------------------------------
-function getIconSVG(type) {
+function getModalIcon(type) {
   if (type === "safe") {
-    return `
-    <svg viewBox="0 0 36 36" width="56" height="56">
-      <path d="M18 3L6 8v9c0 7.88 5.14 15.27 12 17 6.86-1.73 12-9.12 12-17V8L18 3z"
-      fill="#00c896" opacity=".18"/>
-      <path d="M18 3L6 8v9c0 7.88 5.14 15.27 12 17 6.86-1.73 12-9.12 12-17V8L18 3z"
-      fill="none" stroke="#00c896" stroke-width="2"/>
-      <path d="M13 18l3.5 3.5L23 14"
-      stroke="#00c896" stroke-width="2.8"
-      fill="none"
-      stroke-linecap="round"
-      stroke-linejoin="round"/>
+    return `<svg viewBox="0 0 48 48" width="56" height="56">
+      <path d="M24 6L10 13v9c0 9.5 6 18.5 14 20 8-1.5 14-10.5 14-20v-9L24 6z" fill="rgba(0,200,150,0.15)" stroke="#00c896" stroke-width="2" stroke-linejoin="round"/>
+      <path d="M18 24l4 4 8-8" stroke="#00c896" stroke-width="3.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
     </svg>`;
   }
-
   if (type === "warning") {
-    return `
-    <svg viewBox="0 0 80 80" width="56" height="56">
-      <polygon points="40,8 74,68 6,68"
-      fill="rgba(255,204,0,.18)"
-      stroke="#ffcc00"
-      stroke-width="3"/>
-      <line x1="40" y1="28" x2="40" y2="50"
-      stroke="#ffcc00"
-      stroke-width="5"
-      stroke-linecap="round"/>
-      <circle cx="40" cy="60" r="4" fill="#ffcc00"/>
+    return `<svg viewBox="0 0 48 48" width="56" height="56">
+      <polygon points="24,8 44,40 4,40" fill="rgba(255,200,0,0.15)" stroke="#ffc107" stroke-width="2.5" stroke-linejoin="round"/>
+      <line x1="24" y1="18" x2="24" y2="30" stroke="#ffc107" stroke-width="3.5" stroke-linecap="round"/>
+      <circle cx="24" cy="36" r="2.5" fill="#ffc107"/>
     </svg>`;
   }
-
-  return `
-  <svg viewBox="0 0 36 36" width="56" height="56">
-    <path d="M18 3L6 8v9c0 7.88 5.14 15.27 12 17 6.86-1.73 12-9.12 12-17V8L18 3z"
-    fill="red" opacity=".18"/>
-    <path d="M18 3L6 8v9c0 7.88 5.14 15.27 12 17 6.86-1.73 12-9.12 12-17V8L18 3z"
-    fill="none" stroke="red" stroke-width="2"/>
-    <line x1="18" y1="12" x2="18" y2="21"
-    stroke="red"
-    stroke-width="3"
-    stroke-linecap="round"/>
-    <circle cx="18" cy="26" r="2" fill="red"/>
+  // danger - vermelho
+  return `<svg viewBox="0 0 48 48" width="56" height="56">
+    <path d="M24 6L6 12v9c0 10.5 7 20 18 22 11-2 18-11.5 18-22v-9L24 6z" fill="rgba(255,60,60,0.15)" stroke="#ff3b3b" stroke-width="2" stroke-linejoin="round"/>
+    <line x1="24" y1="18" x2="24" y2="30" stroke="#ff3b3b" stroke-width="3.5" stroke-linecap="round"/>
+    <circle cx="24" cy="36" r="2.5" fill="#ff3b3b"/>
   </svg>`;
 }
 
 // -------------------------------
-// MODAL COM SWIPE TO CLOSE (MOBILE)
+// MODAL
 // -------------------------------
-let touchStartY = 0;
-let touchCurrentY = 0;
-let isSwiping = false;
-let modalBoxElement = null;
-
-function initSwipeToClose() {
-  modalBoxElement = document.querySelector('.modal-box');
-  if (!modalBoxElement) return;
-
-  if (!document.querySelector('.modal-swipe-indicator') && window.innerWidth <= 480) {
-    const indicator = document.createElement('div');
-    indicator.className = 'modal-swipe-indicator';
-    modalBoxElement.insertBefore(indicator, modalBoxElement.firstChild);
-  }
-
-  modalBoxElement.removeEventListener('touchstart', handleTouchStart);
-  modalBoxElement.removeEventListener('touchmove', handleTouchMove);
-  modalBoxElement.removeEventListener('touchend', handleTouchEnd);
+function abrirModalComDetalhes(tipo, titulo, motivosArray, cor) {
+  if (!modal || !modalIcon || !modalTitle || !modalText) return;
   
-  modalBoxElement.addEventListener('touchstart', handleTouchStart, { passive: false });
-  modalBoxElement.addEventListener('touchmove', handleTouchMove, { passive: false });
-  modalBoxElement.addEventListener('touchend', handleTouchEnd);
-}
-
-function handleTouchStart(e) {
-  if (!modal.classList.contains('active')) return;
+  modalIcon.innerHTML = getModalIcon(tipo);
+  modalTitle.innerText = titulo;
+  modalTitle.style.color = cor;
   
-  const touch = e.touches[0];
-  touchStartY = touch.clientY;
-  isSwiping = true;
-  if (modalBoxElement) {
-    modalBoxElement.classList.add('swiping');
-  }
-}
-
-function handleTouchMove(e) {
-  if (!isSwiping || !modal.classList.contains('active')) return;
+  modalIcon.classList.remove('modal-icon--safe', 'modal-icon--warning', 'modal-icon--danger');
   
-  const touch = e.touches[0];
-  touchCurrentY = touch.clientY;
-  const diffY = touchCurrentY - touchStartY;
-  
-  if (diffY > 0) {
-    e.preventDefault();
-    
-    const translateY = Math.min(diffY, 200);
-    if (modalBoxElement) {
-      modalBoxElement.style.transform = `translateY(${translateY}px)`;
-    }
-    
-    const opacity = Math.max(0, 0.85 - (diffY / 800));
-    modal.style.background = `rgba(0,0,0,${opacity})`;
-  }
-}
-
-function handleTouchEnd(e) {
-  if (!isSwiping || !modal.classList.contains('active')) {
-    isSwiping = false;
-    return;
+  if (tipo === "safe") {
+    modalIcon.classList.add('modal-icon--safe');
+  } else if (tipo === "warning") {
+    modalIcon.classList.add('modal-icon--warning');
+  } else {
+    modalIcon.classList.add('modal-icon--danger');
   }
   
-  const diffY = touchCurrentY - touchStartY;
+  let bgClass = "";
+  if (tipo === "safe") bgClass = "modal-message-list--safe";
+  else if (tipo === "warning") bgClass = "modal-message-list--warning";
+  else bgClass = "modal-message-list--danger";
   
-  if (diffY > 80) {
-    fecharModal();
+  let listaHtml = "";
+  if (motivosArray && motivosArray.length > 0) {
+    listaHtml = `<div class="modal-message-list ${bgClass}"><ul>${motivosArray.map(m => `<li>${m}</li>`).join('')}</ul></div>`;
+  } else {
+    listaHtml = `<div class="modal-message-list ${bgClass}"><p>Nenhum detalhe adicional.</p></div>`;
   }
   
-  if (modalBoxElement) {
-    modalBoxElement.style.transform = '';
-    modalBoxElement.classList.remove('swiping');
-  }
-  
-  modal.style.background = '';
-  
-  isSwiping = false;
-  touchStartY = 0;
-  touchCurrentY = 0;
-}
-
-function abrirModalComIcon(icon, title, text, color) {
-  modalIcon.innerHTML = icon;
-  modalTitle.innerText = title;
-  modalText.innerText = text;
-  modalTitle.style.color = color;
+  modalText.innerHTML = listaHtml;
   modal.classList.add("active");
   
   setTimeout(() => {
@@ -293,127 +216,77 @@ modal.addEventListener("click", e => {
   if (e.target === modal) fecharModal();
 });
 
-document.addEventListener('DOMContentLoaded', function() {
-  initSwipeToClose();
-});
-
 // -------------------------------
-// VERIFICAÇÃO ROBUSTA DE LINKS
+// VERIFICAÇÃO
 // -------------------------------
 function verificarLink() {
   let valor = linkInput.value.trim();
 
   if (valor === "") {
-    abrirModalComIcon(
-      getIconSVG("warning"),
-      "Campo vazio",
-      "Cole um link antes de verificar.",
-      "#ffcc00"
-    );
+    abrirModalComDetalhes("warning", "Campo vazio", ["Cole um link antes de verificar."], "#ffcc00");
     return;
   }
 
   let url;
-
+  let temHttp = false;
+  
   try {
     if (!valor.startsWith("http://") && !valor.startsWith("https://")) {
       valor = "https://" + valor;
+      temHttp = false;
+    } else {
+      temHttp = true;
     }
-
     url = new URL(valor);
   } catch {
-    abrirModalComIcon(
-      getIconSVG("warning"),
-      "Link inválido",
-      "O endereço informado não parece válido.",
-      "#ffcc00"
-    );
+    abrirModalComDetalhes("warning", "Link inválido", ["O endereço não parece válido.", "Verifique se está completo."], "#ffcc00");
     return;
   }
 
   const dominio = url.hostname.toLowerCase();
   const full = valor.toLowerCase();
-
   let score = 0;
   let motivos = [];
 
-  const confiaveis = [
-    "g1.globo.com",
-    "uol.com.br",
-    "bbc.com",
-    "gov.br",
-    "reuters.com",
-    "apnews.com",
-    "folha.uol.com.br",
-    "estadao.com.br"
-  ];
-
+  const confiaveis = ["g1.globo.com", "uol.com.br", "bbc.com", "gov.br", "reuters.com", "apnews.com", "folha.uol.com.br", "estadao.com.br"];
   if (confiaveis.some(site => dominio.includes(site))) {
     score += 4;
-    motivos.push("fonte reconhecida");
+    motivos.push("Fonte reconhecida e respeitada");
   }
 
-  const encurtadores = [
-    "bit.ly",
-    "tinyurl.com",
-    "ow.ly",
-    "cutt.ly"
-  ];
-
+  const encurtadores = ["bit.ly", "tinyurl.com", "ow.ly", "cutt.ly"];
   if (encurtadores.some(site => dominio.includes(site))) {
     score -= 3;
-    motivos.push("link encurtado");
+    motivos.push("Link encurtado (pode esconder destino)");
   }
 
-  if (url.protocol === "https:") {
+  if (temHttp && url.protocol === "https:") {
     score += 1;
-  } else {
+    motivos.push("Conexão segura (HTTPS)");
+  } else if (temHttp && url.protocol !== "https:") {
     score -= 1;
-    motivos.push("sem HTTPS");
+    motivos.push("Sem HTTPS — dados podem ser interceptados");
   }
 
-  const suspeitas = [
-    "urgente",
-    "chocante",
-    "compartilhe",
-    "milagre",
-    "segredo",
-    "vazado"
-  ];
-
+  const suspeitas = ["urgente", "chocante", "compartilhe", "milagre", "segredo", "vazado"];
   suspeitas.forEach(p => {
     if (full.includes(p)) {
       score -= 1;
-      motivos.push("linguagem apelativa");
+      motivos.push(`Palavra sensacionalista: "${p}"`);
     }
   });
 
   if (dominio.includes("@") || dominio.split(".").length > 4) {
     score -= 2;
-    motivos.push("domínio suspeito");
+    motivos.push("Domínio com estrutura estranha ou suspeita");
   }
 
   if (score >= 4) {
-    abrirModalComIcon(
-      getIconSVG("safe"),
-      "Fonte Confiável",
-      "O link aparenta ser seguro. Motivos: " + motivos.join(", "),
-      "#00c896"
-    );
+    abrirModalComDetalhes("safe", "Fonte Confiável", motivos.length ? motivos : ["Nenhum sinal de perigo encontrado."], "#00c896");
   } else if (score >= 1) {
-    abrirModalComIcon(
-      getIconSVG("warning"),
-      "Requer Atenção",
-      "Não parece falso, mas exige cautela. Motivos: " + motivos.join(", "),
-      "#ffcc00"
-    );
+    abrirModalComDetalhes("warning", "Requer Atenção", motivos.length ? motivos : ["Tome cuidado, mas não é claramente falso."], "#ffcc00");
   } else {
-    abrirModalComIcon(
-      getIconSVG("danger"),
-      "Possível Fake News",
-      "Há sinais suspeitos neste link. Motivos: " + motivos.join(", "),
-      "#ff3b3b"
-    );
+    abrirModalComDetalhes("danger", "Possível Fake News", motivos.length ? motivos : ["Vários sinais suspeitos detectados."], "#ff3b3b");
   }
 }
 
@@ -507,4 +380,90 @@ dots.forEach(dot => {
       dot.style.transform = "scale(1)";
     }, 180);
   });
+});
+
+// -------------------------------
+// SWIPE TO CLOSE (MOBILE)
+// -------------------------------
+let touchStartY = 0;
+let touchCurrentY = 0;
+let isSwiping = false;
+let modalBoxElement = null;
+
+function initSwipeToClose() {
+  modalBoxElement = document.querySelector('.modal-box');
+  if (!modalBoxElement) return;
+
+  if (!document.querySelector('.modal-swipe-indicator') && window.innerWidth <= 480) {
+    const indicator = document.createElement('div');
+    indicator.className = 'modal-swipe-indicator';
+    modalBoxElement.insertBefore(indicator, modalBoxElement.firstChild);
+  }
+
+  modalBoxElement.removeEventListener('touchstart', handleTouchStart);
+  modalBoxElement.removeEventListener('touchmove', handleTouchMove);
+  modalBoxElement.removeEventListener('touchend', handleTouchEnd);
+  
+  modalBoxElement.addEventListener('touchstart', handleTouchStart, { passive: false });
+  modalBoxElement.addEventListener('touchmove', handleTouchMove, { passive: false });
+  modalBoxElement.addEventListener('touchend', handleTouchEnd);
+}
+
+function handleTouchStart(e) {
+  if (!modal.classList.contains('active')) return;
+  
+  const touch = e.touches[0];
+  touchStartY = touch.clientY;
+  isSwiping = true;
+  if (modalBoxElement) {
+    modalBoxElement.classList.add('swiping');
+  }
+}
+
+function handleTouchMove(e) {
+  if (!isSwiping || !modal.classList.contains('active')) return;
+  
+  const touch = e.touches[0];
+  touchCurrentY = touch.clientY;
+  const diffY = touchCurrentY - touchStartY;
+  
+  if (diffY > 0) {
+    e.preventDefault();
+    
+    const translateY = Math.min(diffY, 200);
+    if (modalBoxElement) {
+      modalBoxElement.style.transform = `translateY(${translateY}px)`;
+    }
+    
+    const opacity = Math.max(0, 0.85 - (diffY / 800));
+    modal.style.background = `rgba(0,0,0,${opacity})`;
+  }
+}
+
+function handleTouchEnd(e) {
+  if (!isSwiping || !modal.classList.contains('active')) {
+    isSwiping = false;
+    return;
+  }
+  
+  const diffY = touchCurrentY - touchStartY;
+  
+  if (diffY > 80) {
+    fecharModal();
+  }
+  
+  if (modalBoxElement) {
+    modalBoxElement.style.transform = '';
+    modalBoxElement.classList.remove('swiping');
+  }
+  
+  modal.style.background = '';
+  
+  isSwiping = false;
+  touchStartY = 0;
+  touchCurrentY = 0;
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  initSwipeToClose();
 });
