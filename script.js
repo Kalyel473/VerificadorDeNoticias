@@ -5,6 +5,44 @@ const modalTitle = document.getElementById("modalTitle");
 const modalText = document.getElementById("modalText");
 const verifyBtn = document.getElementById("verifyBtn");
 const linkInput = document.getElementById("linkInput");
+const pasteHint = document.getElementById("pasteHint");
+
+// -------------------------------
+// COLAR OU CLICAR
+// -------------------------------
+async function colarLink() {
+  try {
+    const text = await navigator.clipboard.readText();
+    if (text && text.trim() !== "") {
+      linkInput.value = text.trim();
+      linkInput.focus();
+      pasteHint.classList.add("hidden");
+
+      const box = document.getElementById("verifyBox");
+      box.style.borderColor = "rgba(0,200,150,.9)";
+      box.style.boxShadow = "0 0 30px rgba(0,200,150,.25)";
+      setTimeout(() => {
+        box.style.borderColor = "";
+        box.style.boxShadow = "";
+      }, 600);
+    } else {
+      linkInput.focus();
+    }
+  } catch {
+    linkInput.focus();
+    try {
+      document.execCommand("paste");
+    } catch {}
+  }
+}
+
+linkInput.addEventListener("input", () => {
+  if (linkInput.value.trim() !== "") {
+    pasteHint.classList.add("hidden");
+  } else {
+    pasteHint.classList.remove("hidden");
+  }
+});
 
 const sectionsMap = {
   inicio: document.getElementById("inicioSecao"),
@@ -248,7 +286,7 @@ function verificarLink() {
     motivos.push("domínio suspeito");
   }
 
-  // Resultado
+  // resultado
   if (score >= 4) {
     abrirModalComIcon(
       getIconSVG("safe"),
@@ -279,7 +317,17 @@ linkInput.addEventListener("keypress", e => {
 });
 
 // BOTÃO VERIFICAR
-verifyBtn.addEventListener("click", verificarLink);
+verifyBtn.addEventListener("click", function(e) {
+  createRipple(e, this);
+
+  // efeito de expansão
+  this.classList.add("btn-expanding");
+
+  setTimeout(() => {
+    this.classList.remove("btn-expanding");
+    verificarLink();
+  }, 380);
+});
 
 // -------------------------------
 // EFEITO RIPPLE BOTÃO
@@ -299,10 +347,6 @@ function createRipple(e, element) {
 
   setTimeout(() => ripple.remove(), 600);
 }
-
-verifyBtn.addEventListener("click", function(e) {
-  createRipple(e, this);
-});
 
 // -------------------------------
 // ANIMAÇÃO DOS CARDS
