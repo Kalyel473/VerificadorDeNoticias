@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<title>LinkSeguro | Verificador de Confiabilidade</title>
+
+<link rel="stylesheet" href="style.css">
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Oswald:wght@400;700&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+<header>
+<div class="container header-wrap">
+
+<div class="logo">
+Link<span>Seguro</span>
+
+<div class="logo-icon">
+<svg viewBox="0 0 24 24">
+<path d="M12 2L4 5v6c0 5.25 3.5 10.15 8 11.35C16.5 21.15 20 16.25 20 11V5L12 2z"/>
+<path d="M9 12l2 2 4-4"/>
+</svg>
+</div>
+</div>
+
+<nav id="mainNav">
+<a data-nav="inicio">Início</a>
+<a data-nav="identificar">Identificar</a>
+<a data-nav="dicas">Dicas</a>
+</nav>
+
+</div>
+</header>
+
+<!-- HERO -->
+<section class="hero" id="inicioSecao">
+
+<div class="container hero-wrap">
+
+<!-- ESQUERDA -->
+<div class="hero-left">
+
+<div class="title-white">
+NEM TUDO QUE VOCÊ VÊ
+</div>
+
+<div class="title-red">
+É VERDADE.
+
+<span class="shield-check">
+<svg viewBox="0 0 24 24">
+<path d="M12 2L4 5v6c0 5.25 3.5 10.15 8 11.35C16.5 21.15 20 16.25 20 11V5L12 2z"/>
+<path d="M9 12l2 2 4-4"/>
+</svg>
+</span>
+
+</div>
+
+<p class="hero-sub">
+Verifique links antes de compartilhar <br>
+e ajude a combater a <span>desinformação</span>.
+</p>
+
+<!-- VERIFICAR -->
+<div class="verify-box">
+
+<div class="verify-input-group">
+
+<div class="verify-icon">
+<svg viewBox="0 0 24 24">
+<path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/>
+<path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/>
+</svg>
+</div>
+
+<input
+type="text"
+id="linkInput"
+placeholder="Cole o link aqui para verificar..."
+autocomplete="off"
+>
+
+<button id="verifyBtn" onclick="verificarLink()">
+<svg viewBox="0 0 24 24">
+<circle cx="11" cy="11" r="8"/>
+<line x1="21" y1="21" x2="16.65" y2="16.65"/>
+</svg>
+VERIFICAR
+</button>
+
+</div>
+</div>
+
+<div class="safe">
+<svg viewBox="0 0 24 24">
+<rect x="3" y="11" width="18" height="11" rx="2"/>
+<path d="M7 11V7a5 5 0 0110 0v4"/>
+</svg>
+
+Não armazenamos seus dados. Verificação 100% segura.
+</div>
+
+</div>
+
+<!-- DIREITA -->
+<div class="visual">
+
+<div class="browser-card">
+
+<div class="browser-bar">
+<div class="dot"></div>
+<div class="dot"></div>
+<div class="dot"></div>
+
+<div class="url-bar">
+<svg viewBox="0 0 24 24">
+<path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/>
+<path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/>
+</svg>
+LinkSeguro.com
+</div>
+
+</div>
+
+<!-- ALERTA NOVO -->
+<div class="alert-area">
+
+<div class="alert-triangle">
+<svg viewBox="0 0 80 80">
+
+<polygon
+points="40,8 74,68 6,68"
+fill="rgba(255,0,0,0.12)"
+stroke="red"
+stroke-width="4"
+stroke-linejoin="round"/>
+
+<line
+x1="40"
+y1="28"
+x2="40"
+y2="50"
+stroke="red"
+stroke-width="5"
+stroke-linecap="round"/>
+
+<circle
+cx="40"
+cy="60"
+r="3.8"
+fill="red"/>
+
+</svg>
+</div>
+
+<div class="alert-lines">
+<div class="alert-title">ALERTA</div>
+<div class="alert-line-bar"></div>
+<div class="alert-line-bar"></div>
+<div class="alert-line-bar"></div>
+</div>
+
+</div>
+
+</div>
+
+<!-- BADGES -->
+<div class="badges-wrap">
+
+<div class="badge badge-safe">
+
+<div class="badge-icon">
+<svg viewBox="0 0 36 36">
+
+<path d="M18 3L6 8v9c0 7.88 5.14 15.27 12 17 6.86-1.73 12-9.12 12-17V8L18 3z"
+fill="#00c896"
+opacity=".18"/>
+
+<path d="M18 3L6 8v9c0 7.88 5.14 15.27 12 17 6.86-1.73 12-9.12 12-17V8L18 3z"
+fill="none"
+stroke="#00c896"
+stroke-width="2"
+stroke-linejoin="round"/>
+
+<path d="M13 18l3.5 3.5L23 14"
+stroke="#00c896"
+stroke-width="2.5"
+stroke-linecap="round"
+stroke-linejoin="round"
+fill="none"/>
+
+</svg>
+</div>
+
+Confiável
+
+</div>
+
+<div class="badge badge-danger">
+
+<div class="badge-icon">
+<svg viewBox="0 0 36 36">
+
+<path d="M18 3L6 8v9c0 7.88 5.14 15.27 12 17 6.86-1.73 12-9.12 12-17V8L18 3z"
+fill="red"
+opacity=".18"/>
+
+<path d="M18 3L6 8v9c0 7.88 5.14 15.27 12 17 6.86-1.73 12-9.12 12-17V8L18 3z"
+fill="none"
+stroke="red"
+stroke-width="2"
+stroke-linejoin="round"/>
+
+<line
+x1="18"
+y1="13"
+x2="18"
+y2="21"
+stroke="red"
+stroke-width="2.5"
+stroke-linecap="round"/>
+
+<circle cx="18" cy="25" r="1.5" fill="red"/>
+
+</svg>
+</div>
+
+Suspeito
+
+</div>
+
+</div>
+
+</div>
+</div>
+</section>
+
+<!-- IDENTIFICAR -->
+<section class="section container" id="identificarSecao">
+
+<h2>Como identificar <span>fake news?</span></h2>
+
+<p class="sub">
+Fique atento a esses sinais antes de acreditar ou compartilhar qualquer conteúdo.
+</p>
+
+ <div class="grid">
+    <div class="info-card"><div class="card-icon-wrap"><svg viewBox="0 0 24 24"><path d="M3 11v2a4 4 0 004 4h1l1 4h2l1-4h.5L18 20V4l-5.5 3H7a4 4 0 00-4 4z" stroke-linecap="round" stroke-linejoin="round"/><path d="M18 8a3 3 0 010 8" stroke-linecap="round"/></svg></div><h3>Título<br>Sensacionalista</h3><div class="line"></div><p>Desconfie de títulos chamativos, alarmistas ou que prometem revelações absurdas. O exagero é uma bandeira vermelha.</p></div>
+    <div class="info-card"><div class="card-icon-wrap"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div><h3>Fonte<br>Desconhecida</h3><div class="line"></div><p>Verifique quem publicou. Sites sem nome, sem "sobre" ou com muitos erros grotescos podem ser falsos e perigosos.</p></div>
+    <div class="info-card"><div class="card-icon-wrap"><svg viewBox="0 0 24 24"><path d="M12 2a7 7 0 00-7 7c0 2.5 1.3 4.7 3.3 6H8v1h8v-1h-.3C17.7 13.7 19 11.5 19 9a7 7 0 00-7-7z" stroke-linecap="round" stroke-linejoin="round"/><path d="M10 19v2M14 19v2M9 12a2 2 0 002-2M15 12a2 2 0 01-2-2" stroke-linecap="round"/></svg></div><h3>Apelo<br>Emocional</h3><div class="line"></div><p>Notícias que usam raiva, medo ou comoção para manipular você. Informação séria apresenta dados, não apenas sentimentos.</p></div>
+    <div class="info-card"><div class="card-icon-wrap"><svg viewBox="0 0 24 24"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71" stroke-linecap="round" stroke-linejoin="round"/><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71" stroke-linecap="round" stroke-linejoin="round"/></svg></div><h3>Link<br>Estranho</h3><div class="line"></div><p>Cuidado com links encurtados (bit.ly, tinyurl) ou com domínios bizarros. Um clique pode levar a golpes.</p></div>
+  </div>
+</section>
+
+<!-- DICAS -->
+<section class="section container" id="dicasSecao">
+
+<h2>Dicas práticas para <span>não cair em golpes</span></h2>
+
+<p class="sub">
+Pequenas ações que fazem toda diferença.
+</p>
+
+<div class="grid">
+    <div class="info-card"><div class="card-icon-wrap"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01" stroke-linecap="round"/></svg></div><h3>Pesquise<br>a Origem</h3><div class="line"></div><p>Antes de compartilhar, veja se outros veículos sérios e portais oficiais divulgaram a mesma notícia. A falta de fontes múltiplas é suspeita.</p></div>
+    <div class="info-card"><div class="card-icon-wrap"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/><circle cx="12" cy="15" r="1"/><circle cx="16" cy="15" r="1"/><circle cx="8" cy="15" r="1"/></svg></div><h3>Cuidado com<br>Datas Antigas</h3><div class="line"></div><p>Muitas fake news reciclam acontecimentos velhos e os reapresentam como se fossem atuais. Sempre cheque a data original.</p></div>
+    <div class="info-card"><div class="card-icon-wrap"><svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><circle cx="15.5" cy="15.5" r="1.5"/><path d="M8.5 15.5L15.5 8.5" stroke-linecap="round"/></svg></div><h3>Verifique<br>Imagens</h3><div class="line"></div><p>Use busca reversa de imagens para descobrir se uma foto ou print foi tirado de contexto ou manipulado digitalmente.</p></div>
+    <div class="info-card"><div class="card-icon-wrap"><svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" stroke-linecap="round" stroke-linejoin="round"/></svg></div><h3>Não Compartilhe<br>no Impulso</h3><div class="line"></div><p>Evite o viral emocional. Leia além da manchete, confira fontes e só então decida se realmente vale compartilhar.</p></div>
+  </div>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modalOverlay">
+
+<div class="modal-box">
+
+<div class="modal-icon" id="modalIcon"></div>
+
+<h2 id="modalTitle">Resultado</h2>
+
+<p id="modalText">Mensagem aqui</p>
+
+<button onclick="fecharModal()">
+Fechar
+</button>
+
+</div>
+</div>
+
+<script src="script.js"></script>
+
+</body>
+</html>
