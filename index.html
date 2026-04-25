@@ -2,11 +2,9 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>LinkSeguro</title>
-
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<title>LinkSeguro | Verificador de Confiabilidade</title>
 <link href="https://fonts.googleapis.com/css2?family=Anton&family=Oswald:wght@400;700&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
-
 <style>
 *{
 margin:0;
@@ -22,14 +20,14 @@ font-family:Roboto,sans-serif;
 overflow-x:hidden;
 }
 
-/* BACKGROUND */
+/* background dinâmico */
 body::before{
 content:"";
 position:fixed;
 inset:0;
 background:
-radial-gradient(circle at 80% 20%, rgba(255,0,0,.22), transparent 30%),
-radial-gradient(circle at 85% 35%, rgba(255,0,0,.15), transparent 20%),
+radial-gradient(circle at 80% 20%, rgba(255,0,0,.25), transparent 35%),
+radial-gradient(circle at 85% 40%, rgba(180,0,0,.18), transparent 25%),
 linear-gradient(135deg,#02010d,#030716,#02010d);
 z-index:-2;
 }
@@ -38,10 +36,10 @@ body::after{
 content:"";
 position:fixed;
 inset:0;
-background-image:radial-gradient(circle, rgba(255,0,0,.28) 1px, transparent 1px);
+background-image:radial-gradient(circle, rgba(255,0,0,.30) 1px, transparent 1px);
 background-size:14px 14px;
-mask-image:radial-gradient(circle at 80% 30%, black 10%, transparent 70%);
-opacity:.35;
+mask-image:radial-gradient(ellipse 60% 80% at 80% 30%, black 10%, transparent 70%);
+opacity:.4;
 z-index:-1;
 animation:bgMove 15s linear infinite;
 }
@@ -54,18 +52,18 @@ animation:bgMove 15s linear infinite;
 .container{
 max-width:1400px;
 margin:auto;
-padding:0 20px;
+padding:0 32px;
 }
 
-/* HEADER */
+/* header fixo */
 header{
-height:95px;
-border-bottom:1px solid rgba(255,255,255,.08);
-backdrop-filter:blur(8px);
+height:70px;
+border-bottom:1px solid rgba(255,255,255,.07);
+backdrop-filter:blur(10px);
 position:sticky;
 top:0;
 z-index:999;
-background:rgba(2,1,13,.6);
+background:rgba(2,1,13,.85);
 }
 
 .header-wrap{
@@ -75,401 +73,940 @@ justify-content:space-between;
 align-items:center;
 }
 
+/* logo */
 .logo{
-font-size:46px;
+display:flex;
+align-items:center;
+gap:8px;
+font-size:26px;
 font-family:Oswald,sans-serif;
-animation:fadeDown 1s ease;
+font-weight:700;
+letter-spacing:0.5px;
+animation:fadeDown .8s ease;
 }
 
 .logo span{
 color:red;
-text-shadow:0 0 12px red;
+text-shadow:0 0 10px rgba(255,0,0,.5);
 }
 
+.logo-icon{
+width:28px;
+height:28px;
+position:relative;
+display:flex;
+align-items:center;
+justify-content:center;
+}
+
+.logo-icon svg{
+width:28px;
+height:28px;
+fill:none;
+stroke:red;
+stroke-width:2;
+filter:drop-shadow(0 0 6px rgba(255,0,0,.6));
+}
+
+/* navegação */
 nav{
 display:flex;
-gap:28px;
+gap:32px;
 }
 
 nav a{
 color:#fff;
 text-decoration:none;
-font-size:18px;
+font-size:16px;
+font-weight:500;
 position:relative;
 transition:.3s;
+cursor:pointer;
 }
 
-nav a:hover{
-color:red;
-}
+nav a:hover{color:red;}
 
 nav a::after{
 content:"";
 position:absolute;
 left:0;
-bottom:-6px;
+bottom:-5px;
 width:0;
 height:2px;
 background:red;
 transition:.3s;
 }
 
-nav a:hover::after{
-width:100%;
+nav a:hover::after{width:100%;}
+
+nav a.active{
+color:red;
 }
 
-/* HERO */
+nav a.active::after{
+width:100%;
+background:red;
+}
+
 .hero{
-padding:70px 0;
+padding:64px 0 40px;
 }
 
 .hero-wrap{
 display:grid;
 grid-template-columns:1fr 1fr;
-gap:30px;
+gap:40px;
 align-items:center;
+}
+
+.hero-left{
+animation:slideLeft .9s ease;
 }
 
 .title-white{
 font-family:Anton,sans-serif;
-font-size:92px;
-line-height:.95;
-animation:slideLeft 1s ease;
+font-size:80px;
+line-height:1;
+letter-spacing:1px;
 }
 
 .title-red{
 font-family:Anton,sans-serif;
-font-size:92px;
-line-height:.95;
+font-size:80px;
+line-height:1;
 color:red;
-margin-top:10px;
-text-shadow:0 0 18px rgba(255,0,0,.5);
-animation:slideLeft 1.3s ease;
+text-shadow:0 0 22px rgba(255,0,0,.45);
+display:flex;
+align-items:center;
+gap:14px;
+flex-wrap:wrap;
 }
 
-.hero p{
-margin-top:20px;
-font-size:22px;
-color:#ddd;
-line-height:1.5;
+.title-red .shield-check{
+display:inline-flex;
+align-items:center;
+}
+
+.title-red .shield-check svg{
+width:56px;
+height:56px;
+fill:none;
+stroke:red;
+stroke-width:2;
+filter:drop-shadow(0 0 8px rgba(255,0,0,.5));
+}
+
+.hero-sub{
+margin-top:18px;
+font-size:18px;
+color:#cdd0d8;
+line-height:1.6;
+animation:fadeUp 1.2s ease;
+}
+
+.hero-sub span{color:red;}
+
+/* caixa de input */
+.verify-box{
+margin-top:24px;
+border:1.5px solid rgba(255,0,0,.7);
+border-radius:10px;
+overflow:hidden;
+background:#09090f;
+box-shadow:0 0 24px rgba(255,0,0,.08);
+transition: all 0.3s ease;
 animation:fadeUp 1.5s ease;
 }
 
-.hero p span{
-color:red;
+.verify-box:hover{
+border-color: rgba(255,0,0,1);
+box-shadow: 0 0 32px rgba(255,0,0,.2);
 }
 
-.verify-box{
-margin-top:28px;
+/* layout flexível */
+.verify-input-group{
 display:flex;
-border:1px solid red;
-border-radius:14px;
-overflow:hidden;
-height:62px;
-max-width:720px;
-animation:fadeUp 1.8s ease;
-box-shadow:0 0 20px rgba(255,0,0,.1);
+align-items:stretch;
+width: 100%;
+}
+
+.verify-icon{
+display:flex;
+align-items:center;
+padding:0 14px 0 18px;
+color:#555;
+flex-shrink:0;
+}
+
+.verify-icon svg{
+width:20px;
+height:20px;
+stroke:#666;
+fill:none;
+stroke-width:2;
 }
 
 .verify-box input{
 flex:1;
-background:#08090d;
+background:transparent;
 border:none;
 color:#fff;
-padding:0 22px;
-font-size:16px;
+font-size:15px;
 outline:none;
+padding:0 4px;
+height:56px;
+min-width: 0;
 }
 
+.verify-box input::placeholder{
+color:#4a4a5a;
+}
+
+/* botão com animação */
 .verify-box button{
-width:190px;
+display:flex;
+align-items:center;
+justify-content:center;
+gap:8px;
+padding:0 28px;
 background:red;
 border:none;
 color:#fff;
-font-size:24px;
+font-size:17px;
 font-family:Oswald,sans-serif;
+font-weight:700;
+letter-spacing:1px;
 cursor:pointer;
-transition:.3s;
+transition: all 0.3s ease;
+white-space:nowrap;
+height:56px;
+position: relative;
+overflow: hidden;
+flex-shrink:0;
+}
+
+.verify-box button svg{
+width:18px;
+height:18px;
+stroke:#fff;
+fill:none;
+stroke-width:2.5;
+transition: transform 0.3s ease;
+}
+
+/* animação do botão */
+.verify-box button::before{
+content: '';
+position: absolute;
+top: 50%;
+left: 50%;
+width: 0;
+height: 0;
+border-radius: 50%;
+background: rgba(255,255,255,0.3);
+transform: translate(-50%, -50%);
+transition: width 0.5s, height 0.5s;
+}
+
+.verify-box button:hover::before{
+width: 300px;
+height: 300px;
 }
 
 .verify-box button:hover{
-background:#ff2d2d;
-letter-spacing:1px;
+background:#e80000;
+letter-spacing:2px;
+transform: scale(1.02);
+box-shadow: 0 0 20px rgba(255,0,0,.4);
+}
+
+.verify-box button:hover svg{
+transform: rotate(15deg) scale(1.1);
+}
+
+.verify-box button:active{
+transform: scale(0.98);
+}
+
+/* efeito de foco no input */
+.verify-box input:focus{
+box-shadow: inset 0 0 8px rgba(255,0,0,.2);
+}
+
+/* animação de onda no botão ao clicar */
+@keyframes ripple {
+  0% {
+    transform: scale(0);
+    opacity: 0.5;
+  }
+  100% {
+    transform: scale(4);
+    opacity: 0;
+  }
+}
+
+.ripple-effect {
+  position: absolute;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.5);
+  transform: scale(0);
+  animation: ripple 0.6s linear;
+  pointer-events: none;
 }
 
 .safe{
-margin-top:14px;
-font-size:15px;
-color:#9498a2;
-animation:fadeUp 2s ease;
+margin-top:12px;
+font-size:13px;
+color:#6b6f7a;
+display:flex;
+align-items:center;
+gap:6px;
+animation:fadeUp 1.8s ease;
 }
 
-/* RIGHT SIDE CARD */
+.safe svg{
+width:14px;
+height:14px;
+stroke:#6b6f7a;
+fill:none;
+stroke-width:2;
+}
+
+/* visual lado direito */
 .visual{
 position:relative;
-min-height:430px;
+height:460px;
 animation:float 5s ease-in-out infinite;
 }
 
-.card{
+.browser-card{
 position:absolute;
-width:430px;
-height:250px;
-background:linear-gradient(145deg,#111524,#070911);
-border-radius:18px;
+top:10px;
+left:0;
+width:390px;
+background:linear-gradient(160deg,#12172e,#090c1a);
+border-radius:16px;
 border:1px solid rgba(255,255,255,.08);
-border-right:4px solid red;
-top:20px;
-left:80px;
-transform:rotate(-6deg);
-box-shadow:0 25px 60px rgba(0,0,0,.55);
+box-shadow:0 30px 80px rgba(0,0,0,.7), 0 0 0 1px rgba(255,255,255,.03);
+overflow:hidden;
 }
 
-.browser{
-position:absolute;
-top:20px;
-left:20px;
-right:20px;
+.browser-bar{
 height:46px;
-background:#121525;
+background:#0c0f20;
+display:flex;
+align-items:center;
+padding:0 16px;
+gap:8px;
+border-bottom:1px solid rgba(255,255,255,.05);
+}
+
+/* estilo mac */
+.dot{
+width:12px;
+height:12px;
+border-radius:50%;
+background:#222235;
+transition: all 0.3s ease;
+cursor: pointer;
+position: relative;
+}
+
+.dot:nth-child(1):hover{
+background: #ff5f56;
+box-shadow: 0 0 8px #ff5f56;
+transform: scale(1.1);
+}
+
+.dot:nth-child(2):hover{
+background: #ffbd2e;
+box-shadow: 0 0 8px #ffbd2e;
+transform: scale(1.1);
+}
+
+.dot:nth-child(3):hover{
+background: #27c93f;
+box-shadow: 0 0 8px #27c93f;
+transform: scale(1.1);
+}
+
+.url-bar{
+flex:1;
+margin:0 12px;
+background:#07091a;
+border-radius:8px;
+height:30px;
+display:flex;
+align-items:center;
+padding:0 12px;
+gap:8px;
+font-size:13px;
+color:#8a8a9a;
+border:1px solid rgba(255,255,255,.06);
+font-family:Roboto,sans-serif;
+}
+
+.url-bar svg{
+width:13px;
+height:13px;
+stroke:#6a6a7a;
+fill:none;
+stroke-width:2;
+flex-shrink:0;
+}
+
+.alert-area{
+margin:16px;
+background:linear-gradient(145deg,#1c0305,#0d0206);
 border-radius:12px;
+padding:20px 20px;
+display:flex;
+align-items:center;
+gap:18px;
+border:1.5px solid rgba(255,0,0,.65);
+box-shadow:0 0 24px rgba(255,0,0,.14), inset 0 0 28px rgba(255,0,0,.04);
+min-height:105px;
+transition: all 0.3s ease;
+position: relative;
+overflow: hidden;
+cursor: pointer;
 }
 
-.alert{
-position:absolute;
-top:90px;
-left:40px;
-right:40px;
-bottom:30px;
-background:linear-gradient(145deg,#26070c,#12050a);
-border-radius:18px;
+.alert-area::before{
+content: '';
+position: absolute;
+top: 0;
+left: -100%;
+width: 100%;
+height: 100%;
+background: linear-gradient(90deg, transparent, rgba(255,0,0,0.1), transparent);
+transition: left 0.5s ease;
+}
+
+.alert-area:hover{
+transform: scale(1.02);
+box-shadow: 0 0 35px rgba(255,0,0,.35), inset 0 0 35px rgba(255,0,0,.12);
+border-color: rgba(255,0,0,.9);
+}
+
+.alert-area:hover::before{
+left: 100%;
+}
+
+@keyframes pulseGlow{
+0%, 100%{
+box-shadow: 0 0 20px rgba(255,0,0,.2), inset 0 0 20px rgba(255,0,0,.05);
+}
+50%{
+box-shadow: 0 0 35px rgba(255,0,0,.5), inset 0 0 30px rgba(255,0,0,.15);
+}
+}
+
+.alert-area{
+animation: pulseGlow 2s ease-in-out infinite;
+}
+
+.alert-triangle{
+width:82px;
+height:82px;
+flex-shrink:0;
 display:flex;
 align-items:center;
 justify-content:center;
-font-family:Anton,sans-serif;
-font-size:44px;
-color:red;
-text-shadow:0 0 20px red;
-animation:pulse 2s infinite;
+transition: transform 0.3s ease;
 }
 
-.tag{
+.alert-area:hover .alert-triangle{
+transform: rotate(5deg) scale(1.05);
+}
+
+.alert-triangle svg{
+width:82px;
+height:82px;
+filter:drop-shadow(0 0 12px rgba(255,0,0,.75));
+transition: all 0.3s ease;
+}
+
+.alert-area:hover .alert-triangle svg{
+filter:drop-shadow(0 0 20px rgba(255,0,0,.95));
+}
+
+.alert-lines{
+flex:1;
+}
+
+.alert-title{
+font-family:Oswald,sans-serif;
+font-size:30px;
+color:red;
+text-shadow:0 0 20px rgba(255,0,0,.85);
+letter-spacing:2px;
+margin-bottom:10px;
+transition: all 0.3s ease;
+}
+
+.alert-area:hover .alert-title{
+text-shadow:0 0 30px rgba(255,0,0,1);
+letter-spacing: 3px;
+}
+
+.alert-line-bar{
+height:5px;
+border-radius:3px;
+background:rgba(255,0,0,.18);
+margin:5px 0;
+transition: all 0.3s ease;
+position: relative;
+overflow: hidden;
+}
+
+.alert-line-bar::after{
+content: '';
+position: absolute;
+top: 0;
+left: -100%;
+width: 100%;
+height: 100%;
+background: linear-gradient(90deg, transparent, rgba(255,0,0,0.4), transparent);
+animation: shimmer 2s infinite;
+}
+
+@keyframes shimmer{
+0%{ left: -100%; }
+100%{ left: 100%; }
+}
+
+.alert-area:hover .alert-line-bar{
+background: rgba(255,0,0,.35);
+box-shadow: 0 0 5px rgba(255,0,0,.3);
+}
+
+.alert-line-bar:nth-child(2){width:88%;}
+.alert-line-bar:nth-child(3){width:60%;}
+.alert-line-bar:nth-child(4){width:76%;}
+
+.badge{
 position:absolute;
-width:170px;
-height:70px;
-background:#111523;
+background:linear-gradient(145deg,#131827,#0a0d1c);
 border-radius:14px;
+padding:14px 22px;
 display:flex;
-justify-content:center;
 align-items:center;
-font-size:22px;
-backdrop-filter:blur(8px);
-box-shadow:0 10px 25px rgba(0,0,0,.4);
+gap:13px;
+font-size:17px;
+font-weight:700;
+box-shadow:0 10px 32px rgba(0,0,0,.65);
+border:1px solid rgba(255,255,255,.07);
+letter-spacing:.2px;
+transition: all 0.3s ease;
+cursor: pointer;
 }
 
-.good{
-right:20px;
-top:140px;
-color:#00ffb3;
-animation:fadeRight 1.5s ease;
+.badge:hover{
+transform: translateY(-5px) scale(1.05);
+box-shadow: 0 15px 40px rgba(0,0,0,.8);
 }
 
-.bad{
-right:40px;
-top:260px;
-color:red;
-animation:fadeRight 2s ease;
+.badge-icon{
+width:36px;
+height:36px;
+display:flex;
+align-items:center;
+justify-content:center;
+flex-shrink:0;
 }
 
-/* SECTION */
+.badge-icon svg{
+width:36px;
+height:36px;
+transition: transform 0.3s ease;
+}
+
+.badge:hover .badge-icon svg{
+transform: rotate(8deg) scale(1.1);
+}
+
+.badge-safe{
+right:-10px;
+top:90px;
+color:#fff;
+animation:fadeRight 1.2s ease;
+border-color:rgba(0,200,150,.12);
+}
+
+.badge-danger{
+right:10px;
+top:228px;
+color:#fff;
+animation:fadeRight 1.8s ease;
+border-color:rgba(255,0,0,.12);
+}
+
 .section{
-padding:40px 0 80px;
+padding:60px 0 80px;
+scroll-margin-top: 70px;
 }
 
 .section h2{
-font-size:68px;
+font-size:52px;
 font-weight:700;
-margin-bottom:10px;
+margin-bottom:8px;
+font-family:Anton,sans-serif;
+letter-spacing:-0.5px;
+opacity:0;
+transform:translateY(30px);
+animation:titleReveal 0.8s ease forwards;
 }
 
-.section h2 span{
-color:red;
+@keyframes titleReveal{
+to{
+opacity:1;
+transform:translateY(0);
 }
+}
+
+.section h2 span{color:red;}
 
 .sub{
-font-size:24px;
-color:#9498a2;
-margin-bottom:35px;
+font-size:18px;
+color:#7a7e8a;
+margin-bottom:42px;
+font-weight:400;
+opacity:0;
+transform:translateY(20px);
+animation:subReveal 0.8s ease 0.2s forwards;
 }
 
-/* GRID */
+@keyframes subReveal{
+to{
+opacity:1;
+transform:translateY(0);
+}
+}
+
+/* grid cards */
 .grid{
 display:grid;
 grid-template-columns:repeat(4,1fr);
-gap:22px;
+gap:24px;
 }
 
 .info-card{
-background:#0b0f1d;
-border:1px solid rgba(255,0,0,.4);
-border-radius:16px;
-padding:28px;
-transition:.35s;
+background:rgba(10,14,29,0.7);
+backdrop-filter:blur(2px);
+border:1px solid rgba(255,255,255,.06);
+border-radius:20px;
+padding:28px 24px;
 opacity:0;
-transform:translateY(40px);
+transform:perspective(1000px) translateY(40px) rotateX(10deg) scale(0.95);
+position:relative;
+overflow:hidden;
+transition:all 0.6s cubic-bezier(0.34, 1.2, 0.64, 1);
+filter:blur(4px);
+}
+
+/* efeito de brilho na borda */
+.info-card::before{
+content:"";
+position:absolute;
+top:var(--y, 50%);
+left:var(--x, 50%);
+width:0;
+height:0;
+border-radius:50%;
+background:radial-gradient(circle, rgba(255,0,0,0.3), transparent 70%);
+transform:translate(-50%, -50%);
+transition:width 0.5s, height 0.5s;
+pointer-events:none;
+z-index:1;
+}
+
+.info-card:hover::before{
+width:300px;
+height:300px;
+}
+
+/* linha de brilho superior */
+.info-card::after{
+content:"";
+position:absolute;
+top:0;
+left:-100%;
+width:100%;
+height:2px;
+background:linear-gradient(90deg, transparent, red, transparent);
+transition:left 0.5s ease;
+}
+
+.info-card:hover::after{
+left:100%;
 }
 
 .info-card.show{
 opacity:1;
-transform:translateY(0);
+transform:perspective(1000px) translateY(0) rotateX(0) scale(1);
+filter:blur(0);
 }
 
 .info-card:hover{
-transform:translateY(-10px) scale(1.03);
-box-shadow:0 0 30px rgba(255,0,0,.15);
-border-color:red;
+transform:translateY(-12px) scale(1.02);
+box-shadow:0 20px 40px rgba(255,0,0,.2), 0 0 0 2px rgba(255,0,0,.3);
+background:rgba(12,16,34,0.95);
 }
 
-.icon{
-width:78px;
-height:78px;
-border-radius:50%;
-border:1px solid rgba(255,0,0,.5);
+/* efeito de stagger nos cards */
+.info-card:nth-child(1).show{transition-delay:0.05s;}
+.info-card:nth-child(2).show{transition-delay:0.15s;}
+.info-card:nth-child(3).show{transition-delay:0.25s;}
+.info-card:nth-child(4).show{transition-delay:0.35s;}
+
+.card-icon-wrap{
+width:72px;
+height:72px;
+border-radius:20px;
+background:rgba(255,0,0,.08);
+border:1px solid rgba(255,0,0,.28);
 display:flex;
-justify-content:center;
 align-items:center;
-font-size:34px;
-margin-bottom:18px;
+justify-content:center;
+margin-bottom:22px;
+transition:all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+transform-origin:center;
+}
+
+.info-card:hover .card-icon-wrap{
+background:rgba(255,0,0,.25);
+border-color:red;
+transform:rotate(5deg) scale(1.1);
+box-shadow:0 0 20px rgba(255,0,0,.4);
+}
+
+.card-icon-wrap svg{
+width:34px;
+height:34px;
+stroke:red;
+fill:none;
+stroke-width:1.8;
+filter:drop-shadow(0 0 5px rgba(255,0,0,.3));
+transition:all 0.3s ease;
+}
+
+.info-card:hover .card-icon-wrap svg{
+filter:drop-shadow(0 0 12px rgba(255,0,0,.7));
+transform:scale(1.05);
 }
 
 .info-card h3{
 font-family:Oswald,sans-serif;
-font-size:32px;
-line-height:1.1;
+font-size:22px;
+font-weight:700;
+line-height:1.2;
 text-transform:uppercase;
+letter-spacing:.5px;
+margin-bottom:6px;
+transform:translateX(0);
+transition:transform 0.3s ease;
+}
+
+.info-card:hover h3{
+transform:translateX(5px);
+color:red;
+text-shadow:0 0 8px rgba(255,0,0,.3);
 }
 
 .line{
-width:35px;
-height:2px;
+width:40px;
+height:3px;
 background:red;
-margin:12px 0;
+margin:12px 0 16px;
+border-radius:3px;
+transition:width 0.3s ease, box-shadow 0.3s ease;
+}
+
+.info-card:hover .line{
+width:60px;
+box-shadow:0 0 8px red;
 }
 
 .info-card p{
-color:#8d8d8d;
-font-size:18px;
-line-height:1.4;
+color:#b0b4c4;
+font-size:15px;
+line-height:1.55;
+font-weight:400;
+transition:color 0.3s ease, transform 0.3s ease;
 }
 
-/* MODAL */
+.info-card:hover p{
+color:#e0e4f0;
+transform:translateX(3px);
+}
+
+/* feito de partículas nos cards */
+.info-card .particle{
+position:absolute;
+width:4px;
+height:4px;
+background:red;
+border-radius:50%;
+opacity:0;
+pointer-events:none;
+transition:all 0.5s ease;
+}
+
 .modal-overlay{
 position:fixed;
 inset:0;
-background:rgba(0,0,0,.75);
+background:rgba(0,0,0,.85);
 display:flex;
 justify-content:center;
 align-items:center;
 opacity:0;
 visibility:hidden;
-transition:.35s;
+transition:.3s;
 z-index:9999;
-backdrop-filter:blur(6px);
+backdrop-filter:blur(8px);
 }
 
-.modal-overlay.active{
-opacity:1;
-visibility:visible;
-}
+.modal-overlay.active{opacity:1;visibility:visible;}
 
 .modal-box{
 width:90%;
-max-width:460px;
+max-width:480px;
 background:linear-gradient(145deg,#0d1220,#06070d);
-padding:35px;
-border-radius:18px;
-border:1px solid rgba(255,0,0,.4);
+padding:36px 32px;
+border-radius:24px;
+border:1px solid rgba(255,0,0,.5);
 text-align:center;
-transform:scale(.8);
-transition:.35s;
+transform:scale(.85);
+transition:.3s;
+animation: modalFloat 0.4s ease-out;
 }
 
-.modal-overlay.active .modal-box{
-transform:scale(1);
+@keyframes modalFloat{
+0%{
+transform: scale(0.7) translateY(-30px);
+opacity: 0;
 }
+100%{
+transform: scale(1) translateY(0);
+opacity: 1;
+}
+}
+
+.modal-overlay.active .modal-box{transform:scale(1);}
 
 .modal-icon{
-width:80px;
-height:80px;
+width:88px;
+height:88px;
 border-radius:50%;
-border:2px solid red;
-margin:auto;
+margin:0 auto 20px;
 display:flex;
-justify-content:center;
 align-items:center;
-font-size:38px;
-margin-bottom:18px;
+justify-content:center;
+background:rgba(255,0,0,.1);
+transition:.2s;
+animation: iconPulse 0.5s ease-out;
+}
+
+@keyframes iconPulse{
+0%{
+transform: scale(0);
+opacity: 0;
+}
+50%{
+transform: scale(1.1);
+}
+100%{
+transform: scale(1);
+opacity: 1;
+}
+}
+
+.modal-icon svg{
+width:52px;
+height:52px;
+filter:drop-shadow(0 0 8px rgba(0,0,0,.5));
 }
 
 .modal-box h2{
+font-family:Oswald,sans-serif;
 font-size:32px;
-margin-bottom:10px;
+margin-bottom:12px;
+letter-spacing:1px;
+animation: slideInFromTop 0.4s ease-out 0.1s both;
+}
+
+@keyframes slideInFromTop{
+from{
+opacity: 0;
+transform: translateY(-20px);
+}
+to{
+opacity: 1;
+transform: translateY(0);
+}
 }
 
 .modal-box p{
-color:#bbb;
-font-size:18px;
+color:#b0b4c4;
+font-size:16px;
 line-height:1.5;
-margin-bottom:25px;
+margin-bottom:28px;
+animation: fadeIn 0.4s ease-out 0.2s both;
+}
+
+@keyframes fadeIn{
+from{ opacity: 0; }
+to{ opacity: 1; }
 }
 
 .modal-box button{
 background:red;
 border:none;
-padding:14px 28px;
-border-radius:10px;
+padding:14px 32px;
+border-radius:40px;
 color:#fff;
-font-size:18px;
+font-size:16px;
+font-family:Oswald,sans-serif;
+font-weight:600;
+letter-spacing:1px;
 cursor:pointer;
 transition:.3s;
+position: relative;
+overflow: hidden;
+}
+
+.modal-box button::before{
+content: '';
+position: absolute;
+top: 50%;
+left: 50%;
+width: 0;
+height: 0;
+border-radius: 50%;
+background: rgba(255,255,255,0.3);
+transform: translate(-50%, -50%);
+transition: width 0.6s, height 0.6s;
+}
+
+.modal-box button:hover::before{
+width: 300px;
+height: 300px;
 }
 
 .modal-box button:hover{
-transform:scale(1.05);
+transform:scale(1.04);
+background:#e80000;
+box-shadow: 0 0 20px rgba(255,0,0,.5);
 }
 
-/* ANIMATIONS */
-@keyframes pulse{
-0%,100%{transform:scale(1)}
-50%{transform:scale(1.03)}
-}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-16px)}}
+@keyframes slideLeft{from{opacity:0;transform:translateX(-60px)}to{opacity:1;transform:translateX(0)}}
+@keyframes fadeRight{from{opacity:0;transform:translateX(50px)}to{opacity:1;transform:translateX(0)}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeDown{from{opacity:0;transform:translateY(-30px)}to{opacity:1;transform:translateY(0)}}
 
-@keyframes float{
-0%,100%{transform:translateY(0)}
-50%{transform:translateY(-18px)}
-}
 
-@keyframes slideLeft{
-from{opacity:0;transform:translateX(-80px)}
-to{opacity:1;transform:translateX(0)}
-}
-
-@keyframes fadeRight{
-from{opacity:0;transform:translateX(60px)}
-to{opacity:1;transform:translateX(0)}
-}
-
-@keyframes fadeUp{
-from{opacity:0;transform:translateY(40px)}
-to{opacity:1;transform:translateY(0)}
-}
-
-@keyframes fadeDown{
-from{opacity:0;transform:translateY(-40px)}
-to{opacity:1;transform:translateY(0)}
-}
-
-/* RESPONSIVO */
 @media(max-width:1100px){
 .hero-wrap{grid-template-columns:1fr;}
 .visual{display:none;}
@@ -479,137 +1016,525 @@ to{opacity:1;transform:translateY(0)}
 @media(max-width:700px){
 nav{display:none;}
 .grid{grid-template-columns:1fr;}
-.title-white,.title-red{font-size:54px;}
-.section h2{font-size:42px;}
-.verify-box{flex-direction:column;height:auto;}
-.verify-box button{width:100%;height:60px;}
+.title-white,.title-red{font-size:48px;}
+.section h2{font-size:36px;line-height:1.2;}
+.hero{padding:32px 0;}
+.section{padding:40px 0;}
+}
+
+/* responsividade */
+@media(max-width: 768px){
+.container{
+padding: 0 20px;
+}
+
+.verify-input-group{
+flex-direction: column;
+width: 100%;
+}
+
+.verify-icon{
+display: none;
+}
+
+.verify-box input{
+width: 100%;
+padding: 0 16px;
+height: 50px;
+font-size: 14px;
+border-bottom: 1px solid rgba(255,0,0,.3);
+border-radius: 8px 8px 0 0;
+}
+
+.verify-box button{
+width: 100%;
+height: 50px;
+padding: 0 20px;
+border-radius: 0 0 8px 8px;
+white-space: normal;
+font-size: 16px;
+}
+
+.verify-box{
+border-radius: 12px;
+}
+
+.title-red .shield-check svg{
+width: 40px;
+height: 40px;
+}
+
+.hero-sub{
+font-size: 16px;
+}
+
+.title-white, .title-red{
+font-size: 36px;
+}
+
+.section h2{
+font-size: 28px;
+}
+
+.hero-left{
+text-align: center;
+}
+}
+
+@media(max-width: 480px){
+.title-white, .title-red{
+font-size: 32px;
+}
+
+.verify-box input{
+height: 48px;
+font-size: 13px;
+}
+
+.verify-box button{
+height: 48px;
+font-size: 15px;
+padding: 0 16px;
+}
+
+.title-red{
+gap: 8px;
+}
+
+.title-red .shield-check svg{
+width: 32px;
+height: 32px;
+}
+}
+
+@media(min-width: 769px) and (max-width: 1024px){
+.verify-input-group{
+flex-direction: row;
+}
+
+.verify-box input{
+height: 52px;
+}
+
+.verify-box button{
+height: 52px;
+padding: 0 24px;
+white-space: nowrap;
+}
+}
+
+@media(max-width: 375px){
+.title-white, .title-red{
+font-size: 28px;
+}
+
+.verify-box input{
+height: 44px;
+font-size: 12px;
+}
+
+.verify-box button{
+height: 44px;
+font-size: 14px;
+padding: 0 12px;
+}
+
+.container{
+padding: 0 16px;
+}
 }
 </style>
 </head>
-
 <body>
-
 <header>
 <div class="container header-wrap">
-<div class="logo">Link<span>Seguro</span></div>
-
-<nav>
-<a href="#">Inicio</a>
-<a href="#identificar">Identificar</a>
-<a href="#dicas">Dicas</a>
-</nav>
+  <div class="logo">
+    Link<span>Seguro</span>
+    <div class="logo-icon">
+      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path d="M12 2L4 5v6c0 5.25 3.5 10.15 8 11.35C16.5 21.15 20 16.25 20 11V5L12 2z" stroke-linejoin="round" stroke-linecap="round"/>
+        <path d="M9 12l2 2 4-4" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
+  </div>
+  <nav id="mainNav">
+    <a data-nav="inicio">Início</a>
+    <a data-nav="identificar">Identificar</a>
+    <a data-nav="dicas">Dicas</a>
+  </nav>
 </div>
 </header>
 
-<section class="hero">
+<section class="hero" id="inicioSecao">
 <div class="container hero-wrap">
-
-<div>
-<div class="title-white">NEM TUDO QUE VOCÊ VÊ</div>
-<div class="title-red">É VERDADE.</div>
-
-<p>
-Verifique links antes de compartilhar<br>
-e ajude a combater a <span>desinformação</span>.
-</p>
-
-<div class="verify-box">
-<input type="text" placeholder="Cole o link aqui para verificar...">
-<button onclick="verificarLink()">VERIFICAR</button>
-</div>
-
-<div class="safe">🔒 Não armazenamos seus dados. Verificação 100% segura.</div>
-</div>
-
-<div class="visual">
-<div class="card">
-<div class="browser"></div>
-<div class="alert">⚠ ALERTA</div>
-</div>
-
-<div class="tag good">🛡 Confiável</div>
-<div class="tag bad">🛑 Suspeito</div>
-</div>
-
+  <div class="hero-left">
+    <div class="title-white">NEM TUDO QUE VOCÊ VÊ</div>
+    <div class="title-red">
+      É VERDADE.
+      <span class="shield-check">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12 2L4 5v6c0 5.25 3.5 10.15 8 11.35C16.5 21.15 20 16.25 20 11V5L12 2z" stroke-linejoin="round" stroke-linecap="round"/>
+          <path d="M9 12l2 2 4-4" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </span>
+    </div>
+    <p class="hero-sub">
+      Verifique links antes de compartilhar<br>
+      e ajude a combater a <span>desinformação</span>.
+    </p>
+    <div class="verify-box">
+      <div class="verify-input-group">
+        <div class="verify-icon">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <input type="text" id="linkInput" placeholder="Cole o link aqui para verificar..." autocomplete="off">
+        <button id="verifyBtn" onclick="verificarLink()">
+          <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          VERIFICAR
+        </button>
+      </div>
+    </div>
+    <div class="safe">
+      <svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+      Não armazenamos seus dados. Verificação 100% segura.
+    </div>
+  </div>
+  <div class="visual">
+    <div class="browser-card">
+      <div class="browser-bar">
+        <div class="dot"></div><div class="dot"></div><div class="dot"></div>
+        <div class="url-bar"><svg viewBox="0 0 24 24"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71" stroke-linecap="round" stroke-linejoin="round"/><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71" stroke-linecap="round" stroke-linejoin="round"/></svg>LinkSeguro.com</div>
+      </div>
+      <div class="alert-area">
+        <div class="alert-triangle">
+          <svg viewBox="0 0 80 80">
+            <polygon points="40,8 74,68 6,68" fill="rgba(255,0,0,.08)" stroke="red" stroke-width="3" stroke-linejoin="round"/>
+            <line x1="40" y1="28" x2="40" y2="50" stroke="red" stroke-width="5" stroke-linecap="round"/>
+            <circle cx="40" cy="60" r="3.5" fill="red"/>
+          </svg>
+        </div>
+        <div class="alert-lines">
+          <div class="alert-title">ALERTA</div>
+          <div class="alert-line-bar"></div><div class="alert-line-bar"></div><div class="alert-line-bar"></div>
+        </div>
+      </div>
+    </div>
+    <div class="badge badge-safe"><div class="badge-icon"><svg viewBox="0 0 36 36"><path d="M18 3L6 8v9c0 7.88 5.14 15.27 12 17 6.86-1.73 12-9.12 12-17V8L18 3z" fill="#00c896" opacity=".18"/><path d="M18 3L6 8v9c0 7.88 5.14 15.27 12 17 6.86-1.73 12-9.12 12-17V8L18 3z" fill="none" stroke="#00c896" stroke-width="2" stroke-linejoin="round"/><path d="M13 18l3.5 3.5L23 14" stroke="#00c896" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg></div>Confiável</div>
+    <div class="badge badge-danger"><div class="badge-icon"><svg viewBox="0 0 36 36"><path d="M18 3L6 8v9c0 7.88 5.14 15.27 12 17 6.86-1.73 12-9.12 12-17V8L18 3z" fill="red" opacity=".18"/><path d="M18 3L6 8v9c0 7.88 5.14 15.27 12 17 6.86-1.73 12-9.12 12-17V8L18 3z" fill="none" stroke="red" stroke-width="2" stroke-linejoin="round"/><line x1="18" y1="13" x2="18" y2="21" stroke="red" stroke-width="2.5" stroke-linecap="round"/><circle cx="18" cy="25" r="1.5" fill="red"/></svg></div>Suspeito</div>
+  </div>
 </div>
 </section>
 
-<section class="section container" id="identificar">
-<h2>Como Identificar <span>fake news?</span></h2>
-<p class="sub">Fique atento a esses sinais antes de acreditar ou compartilhar qualquer conteúdo.</p>
-
-<div class="grid">
-<div class="info-card"><div class="icon">📣</div><h3>Título Sensacionalista</h3><div class="line"></div><p>Desconfie de títulos exagerados e chamativos.</p></div>
-<div class="info-card"><div class="icon">🔍</div><h3>Fonte Desconhecida</h3><div class="line"></div><p>Verifique o site e quem publicou a notícia.</p></div>
-<div class="info-card"><div class="icon">🧠</div><h3>Apelo Emocional</h3><div class="line"></div><p>Notícias que usam medo ou raiva para manipular.</p></div>
-<div class="info-card"><div class="icon">🔗</div><h3>Link Estranho</h3><div class="line"></div><p>Cuidado com URLs estranhas ou encurtadas.</p></div>
-</div>
+<!-- fake news -->
+<section class="section container" id="identificarSecao">
+  <h2>Como identificar <span>fake news?</span></h2>
+  <p class="sub">Fique atento a esses sinais antes de acreditar ou compartilhar qualquer conteúdo.</p>
+  <div class="grid">
+    <div class="info-card"><div class="card-icon-wrap"><svg viewBox="0 0 24 24"><path d="M3 11v2a4 4 0 004 4h1l1 4h2l1-4h.5L18 20V4l-5.5 3H7a4 4 0 00-4 4z" stroke-linecap="round" stroke-linejoin="round"/><path d="M18 8a3 3 0 010 8" stroke-linecap="round"/></svg></div><h3>Título<br>Sensacionalista</h3><div class="line"></div><p>Desconfie de títulos chamativos, alarmistas ou que prometem revelações absurdas. O exagero é uma bandeira vermelha.</p></div>
+    <div class="info-card"><div class="card-icon-wrap"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div><h3>Fonte<br>Desconhecida</h3><div class="line"></div><p>Verifique quem publicou. Sites sem nome, sem "sobre" ou com muitos erros grotescos podem ser falsos e perigosos.</p></div>
+    <div class="info-card"><div class="card-icon-wrap"><svg viewBox="0 0 24 24"><path d="M12 2a7 7 0 00-7 7c0 2.5 1.3 4.7 3.3 6H8v1h8v-1h-.3C17.7 13.7 19 11.5 19 9a7 7 0 00-7-7z" stroke-linecap="round" stroke-linejoin="round"/><path d="M10 19v2M14 19v2M9 12a2 2 0 002-2M15 12a2 2 0 01-2-2" stroke-linecap="round"/></svg></div><h3>Apelo<br>Emocional</h3><div class="line"></div><p>Notícias que usam raiva, medo ou comoção para manipular você. Informação séria apresenta dados, não apenas sentimentos.</p></div>
+    <div class="info-card"><div class="card-icon-wrap"><svg viewBox="0 0 24 24"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71" stroke-linecap="round" stroke-linejoin="round"/><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71" stroke-linecap="round" stroke-linejoin="round"/></svg></div><h3>Link<br>Estranho</h3><div class="line"></div><p>Cuidado com links encurtados (bit.ly, tinyurl) ou com domínios bizarros. Um clique pode levar a golpes.</p></div>
+  </div>
 </section>
 
-<!-- MODAL -->
+<!-- dicas -->
+<section class="section container" id="dicasSecao">
+  <h2>Dicas práticas para <span>não cair em golpes</span></h2>
+  <p class="sub">Pequenas ações que fazem toda diferença antes de acreditar ou repassar uma informação.</p>
+  <div class="grid">
+    <div class="info-card"><div class="card-icon-wrap"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01" stroke-linecap="round"/></svg></div><h3>Pesquise<br>a Origem</h3><div class="line"></div><p>Antes de compartilhar, veja se outros veículos sérios e portais oficiais divulgaram a mesma notícia. A falta de fontes múltiplas é suspeita.</p></div>
+    <div class="info-card"><div class="card-icon-wrap"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/><circle cx="12" cy="15" r="1"/><circle cx="16" cy="15" r="1"/><circle cx="8" cy="15" r="1"/></svg></div><h3>Cuidado com<br>Datas Antigas</h3><div class="line"></div><p>Muitas fake news reciclam acontecimentos velhos e os reapresentam como se fossem atuais. Sempre cheque a data original.</p></div>
+    <div class="info-card"><div class="card-icon-wrap"><svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><circle cx="15.5" cy="15.5" r="1.5"/><path d="M8.5 15.5L15.5 8.5" stroke-linecap="round"/></svg></div><h3>Verifique<br>Imagens</h3><div class="line"></div><p>Use busca reversa de imagens para descobrir se uma foto ou print foi tirado de contexto ou manipulado digitalmente.</p></div>
+    <div class="info-card"><div class="card-icon-wrap"><svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" stroke-linecap="round" stroke-linejoin="round"/></svg></div><h3>Não Compartilhe<br>no Impulso</h3><div class="line"></div><p>Evite o viral emocional. Leia além da manchete, confira fontes e só então decida se realmente vale compartilhar.</p></div>
+  </div>
+</section>
+
 <div class="modal-overlay" id="modalOverlay">
-<div class="modal-box">
-<div class="modal-icon" id="modalIcon">✔</div>
-<h2 id="modalTitle">Resultado</h2>
-<p id="modalText">Mensagem aqui</p>
-<button onclick="fecharModal()">Fechar</button>
-</div>
+  <div class="modal-box">
+    <div class="modal-icon" id="modalIcon"></div>
+    <h2 id="modalTitle">Resultado</h2>
+    <p id="modalText">Mensagem aqui</p>
+    <button onclick="fecharModal()">Fechar</button>
+  </div>
 </div>
 
 <script>
-function verificarLink(){
-let valor=document.querySelector("input").value.trim();
-
-if(valor===""){
-abrirModal("⚠","Campo vazio","Cole um link antes de verificar.","#ffcc00");
-return;
+// função para criar efeito ripple no botão
+function createRipple(event, element) {
+  const ripple = document.createElement('div');
+  ripple.classList.add('ripple-effect');
+  const rect = element.getBoundingClientRect();
+  const size = Math.max(rect.width, rect.height);
+  ripple.style.width = ripple.style.height = size + 'px';
+  ripple.style.left = event.clientX - rect.left - size/2 + 'px';
+  ripple.style.top = event.clientY - rect.top - size/2 + 'px';
+  element.style.position = 'relative';
+  element.style.overflow = 'hidden';
+  element.appendChild(ripple);
+  setTimeout(() => ripple.remove(), 600);
 }
 
-if(valor.includes("g1")||valor.includes("uol")||valor.includes("bbc")||valor.includes("gov.br")){
-abrirModal("✔","Fonte Confiável","O link aparenta ser seguro e confiável.","#00ff99");
-}
-else if(valor.includes("bit.ly")||valor.includes("tinyurl")||valor.includes("@")){
-abrirModal("⚠","Link Suspeito","Este link apresenta sinais suspeitos.","#ffcc00");
-}
-else{
-abrirModal("✖","Possível Fake News","Não foi possível validar a origem.","#ff3b3b");
-}
-}
+const navLinks = document.querySelectorAll('#mainNav a');
+const sectionsMap = {
+  inicio: document.getElementById('inicioSecao'),
+  identificar: document.getElementById('identificarSecao'),
+  dicas: document.getElementById('dicasSecao')
+};
 
-function abrirModal(icon,title,text,color){
-let modal=document.getElementById("modalOverlay");
-let ic=document.getElementById("modalIcon");
-
-ic.innerHTML=icon;
-ic.style.color=color;
-ic.style.borderColor=color;
-
-document.getElementById("modalTitle").innerText=title;
-document.getElementById("modalText").innerText=text;
-
-modal.classList.add("active");
+function setActive(navId) {
+  navLinks.forEach(link => {
+    const linkVal = link.getAttribute('data-nav');
+    if (linkVal === navId) {
+      link.classList.add('active');
+    } else {
+      link.classList.remove('active');
+    }
+  });
 }
 
-function fecharModal(){
-document.getElementById("modalOverlay").classList.remove("active");
+function scrollToSection(sectionId, navId) {
+  const target = sectionsMap[sectionId];
+  if (target) {
+    const offset = 70;
+    const elementPosition = target.getBoundingClientRect().top + window.pageYOffset;
+    window.scrollTo({ top: elementPosition - offset, behavior: 'smooth' });
+    setActive(navId);
+  }
 }
 
-document.getElementById("modalOverlay").addEventListener("click",function(e){
-if(e.target===this)fecharModal();
+navLinks.forEach(link => {
+  link.addEventListener('click', (e) => {
+    e.preventDefault();
+    const navValue = link.getAttribute('data-nav');
+    if (navValue === 'inicio') scrollToSection('inicio', 'inicio');
+    else if (navValue === 'identificar') scrollToSection('identificar', 'identificar');
+    else if (navValue === 'dicas') scrollToSection('dicas', 'dicas');
+  });
 });
 
-/* Scroll animation */
-const cards=document.querySelectorAll(".info-card");
+function updateActiveOnScroll() {
+  const scrollPos = window.scrollY + 120;
+  
+  const inicioTop = sectionsMap.inicio.offsetTop;
+  const identificarTop = sectionsMap.identificar.offsetTop;
+  const dicasTop = sectionsMap.dicas.offsetTop;
+  
+  const headerHeight = 70;
+  
+  let currentActive = 'inicio';
 
-window.addEventListener("scroll",()=>{
-cards.forEach(card=>{
-let top=card.getBoundingClientRect().top;
-if(top < window.innerHeight-80){
-card.classList.add("show");
+  if (scrollPos + headerHeight >= dicasTop) {
+    currentActive = 'dicas';
+  } 
+  else if (scrollPos + headerHeight >= identificarTop) {
+    currentActive = 'identificar';
+  }
+  else if (scrollPos + headerHeight >= inicioTop) {
+    currentActive = 'inicio';
+  }
+  
+  setActive(currentActive);
 }
+
+window.addEventListener('scroll', updateActiveOnScroll);
+updateActiveOnScroll();
+
+// VERIFICAÇÃO DE LINK 
+function getIconSVG(type) {
+  if (type === 'safe') {
+    return `<svg viewBox="0 0 36 36" width="52" height="52">
+              <path d="M18 3L6 8v9c0 7.88 5.14 15.27 12 17 6.86-1.73 12-9.12 12-17V8L18 3z" fill="#00c896" opacity=".2"/>
+              <path d="M18 3L6 8v9c0 7.88 5.14 15.27 12 17 6.86-1.73 12-9.12 12-17V8L18 3z" fill="none" stroke="#00c896" stroke-width="2.5" stroke-linejoin="round"/>
+              <path d="M13 18l3.5 3.5L23 14" stroke="#00c896" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+            </svg>`;
+  } else if (type === 'warning') {
+    return `<svg viewBox="0 0 80 80" width="52" height="52">
+              <polygon points="40,8 74,68 6,68" fill="rgba(255,200,0,.12)" stroke="#ffcc00" stroke-width="3" stroke-linejoin="round"/>
+              <line x1="40" y1="28" x2="40" y2="50" stroke="#ffcc00" stroke-width="5" stroke-linecap="round"/>
+              <circle cx="40" cy="62" r="4" fill="#ffcc00"/>
+            </svg>`;
+  } else {
+    return `<svg viewBox="0 0 36 36" width="52" height="52">
+              <path d="M18 3L6 8v9c0 7.88 5.14 15.27 12 17 6.86-1.73 12-9.12 12-17V8L18 3z" fill="red" opacity=".18"/>
+              <path d="M18 3L6 8v9c0 7.88 5.14 15.27 12 17 6.86-1.73 12-9.12 12-17V8L18 3z" fill="none" stroke="red" stroke-width="2.5" stroke-linejoin="round"/>
+              <line x1="18" y1="13" x2="18" y2="22" stroke="red" stroke-width="3" stroke-linecap="round"/>
+              <circle cx="18" cy="27" r="2.5" fill="red"/>
+            </svg>`;
+  }
+}
+
+function verificarLink() {
+  // adicionar efeito ripple no botão
+  const btn = document.getElementById('verifyBtn');
+  const event = new MouseEvent('click', { clientX: btn.offsetWidth/2, clientY: btn.offsetHeight/2 });
+  
+  let valor = document.getElementById("linkInput").value.trim();
+  if (valor === "") {
+    abrirModalComIcon(getIconSVG('warning'), "Campo vazio", "Cole um link antes de verificar.", "#ffcc00");
+    return;
+  }
+  let lowLink = valor.toLowerCase();
+  if (lowLink.includes("g1") || lowLink.includes("uol") || lowLink.includes("bbc") || lowLink.includes("gov.br") || lowLink.includes("reuters") || lowLink.includes("apnews")) {
+    abrirModalComIcon(getIconSVG('safe'), "Fonte Confiável", "O link aparenta ser seguro e de veículo reconhecido.", "#00ffb3");
+  }
+  else if (lowLink.includes("bit.ly") || lowLink.includes("tinyurl") || lowLink.includes("ow.ly") || lowLink.includes("@") || lowLink.includes("whatsapp.com") || lowLink.includes("shorturl")) {
+    abrirModalComIcon(getIconSVG('warning'), "Link Suspeito", "Este link apresenta características suspeitas (encurtador ou redirecionamento estranho).", "#ffcc00");
+  }
+  else {
+    abrirModalComIcon(getIconSVG('danger'), "Possível Fake News", "Não foi possível validar a origem deste link. Verifique com fontes oficiais.", "#ff3b3b");
+  }
+}
+
+function abrirModalComIcon(svgHtml, title, text, colorBorder) {
+  let modal = document.getElementById("modalOverlay");
+  let iconContainer = document.getElementById("modalIcon");
+  iconContainer.innerHTML = svgHtml;
+  iconContainer.style.borderColor = colorBorder;
+  iconContainer.style.background = `rgba(${colorBorder === '#00ffb3' ? '0,255,179' : (colorBorder === '#ffcc00' ? '255,204,0' : '255,59,59')}, 0.1)`;
+  document.getElementById("modalTitle").innerText = title;
+  document.getElementById("modalTitle").style.color = colorBorder;
+  document.getElementById("modalText").innerText = text;
+  modal.classList.add("active");
+}
+
+function fecharModal() {
+  document.getElementById("modalOverlay").classList.remove("active");
+}
+
+document.getElementById("modalOverlay").addEventListener("click", function(e) {
+  if (e.target === this) fecharModal();
 });
+
+const allCards = document.querySelectorAll(".info-card");
+
+const cardObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      const card = entry.target;
+      card.classList.add('show');
+      
+      createParticles(card);
+      
+      cardObserver.unobserve(card);
+    }
+  });
+}, {
+  threshold: 0.2, 
+  rootMargin: "0px 0px -50px 0px" 
 });
+
+// função para criar efeito de partículas ao mostrar o card
+function createParticles(card) {
+  for(let i = 0; i < 8; i++) {
+    const particle = document.createElement('div');
+    particle.className = 'particle';
+    const x = Math.random() * card.offsetWidth;
+    const y = Math.random() * card.offsetHeight;
+    particle.style.left = x + 'px';
+    particle.style.top = y + 'px';
+    particle.style.position = 'absolute';
+    particle.style.width = Math.random() * 4 + 2 + 'px';
+    particle.style.height = particle.style.width;
+    particle.style.background = `hsl(${Math.random() * 20 + 350}, 100%, 60%)`;
+    particle.style.borderRadius = '50%';
+    particle.style.pointerEvents = 'none';
+    particle.style.zIndex = '10';
+    particle.style.opacity = '0.8';
+    particle.style.animation = `particleFade ${Math.random() * 0.8 + 0.6}s ease-out forwards`;
+    card.appendChild(particle);
+    
+    setTimeout(() => particle.remove(), 800);
+  }
+}
+
+// keyframe animação particula
+const styleSheet = document.createElement('style');
+styleSheet.textContent = `
+  @keyframes particleFade {
+    0% {
+      transform: translateY(0) scale(1);
+      opacity: 0.8;
+    }
+    100% {
+      transform: translateY(${Math.random() * -40 - 20}px) scale(0);
+      opacity: 0;
+    }
+  }
+  
+  .info-card {
+    transition: all 0.6s cubic-bezier(0.34, 1.2, 0.64, 1);
+  }
+  
+  .info-card.show {
+    animation: cardPop 0.6s cubic-bezier(0.34, 1.2, 0.64, 1);
+  }
+  
+  @keyframes cardPop {
+    0% {
+      opacity: 0;
+      transform: perspective(1000px) translateY(40px) rotateX(10deg) scale(0.95);
+      filter: blur(4px);
+    }
+    60% {
+      transform: perspective(1000px) translateY(-5px) rotateX(-2deg) scale(1.02);
+    }
+    100% {
+      opacity: 1;
+      transform: perspective(1000px) translateY(0) rotateX(0) scale(1);
+      filter: blur(0);
+    }
+  }
+`;
+document.head.appendChild(styleSheet);
+
+// observa cada card
+allCards.forEach(card => {
+  cardObserver.observe(card);
+});
+
+// movimento efeito card
+allCards.forEach(card => {
+  card.addEventListener('mousemove', (e) => {
+    const rect = card.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    const centerX = rect.width / 2;
+    const centerY = rect.height / 2;
+    const rotateX = (y - centerY) / 20;
+    const rotateY = (centerX - x) / 20;
+    
+    card.style.transform = `perspective(1000px) translateY(-8px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.02)`;
+  });
+  
+  card.addEventListener('mouseleave', () => {
+    card.style.transform = '';
+  });
+});
+
+document.getElementById("linkInput").addEventListener("keypress", function(e) {
+  if (e.key === "Enter") verificarLink();
+});
+
+// mac fechar&abrir&minimizar efeito
+const dots = document.querySelectorAll('.dot');
+dots.forEach((dot, index) => {
+  dot.addEventListener('click', () => {
+    dot.style.transform = 'scale(1.2)';
+    setTimeout(() => {
+      dot.style.transform = 'scale(1)';
+    }, 200);
+  });
+});
+
+// ripple botão
+const verifyBtn = document.getElementById('verifyBtn');
+verifyBtn.addEventListener('click', function(e) {
+  createRipple(e, this);
+});
+
 </script>
-
 </body>
 </html>
