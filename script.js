@@ -167,22 +167,135 @@ function getIconSVG(type) {
 }
 
 // -------------------------------
-// MODAL
+// MODAL COM SWIPE TO CLOSE (MOBILE)
 // -------------------------------
+let touchStartY = 0;
+let touchCurrentY = 0;
+let isSwiping = false;
+let modalBoxElement = null;
+
+function initSwipeToClose() {
+  modalBoxElement = document.querySelector('.modal-box');
+  if (!modalBoxElement) return;
+
+  // Adicionar indicador visual de swipe (apenas mobile)
+  const existingIndicator = document.querySelector('.modal-swipe-indicator');
+  if (!existingIndicator && window.innerWidth <= 480) {
+    const indicator = document.createElement('div');
+    indicator.className = 'modal-swipe-indicator';
+    modalBoxElement.insertBefore(indicator, modalBoxElement.firstChild);
+  }
+
+  // Remover event listeners antigos para evitar duplicação
+  modalBoxElement.removeEventListener('touchstart', handleTouchStart);
+  modalBoxElement.removeEventListener('touchmove', handleTouchMove);
+  modalBoxElement.removeEventListener('touchend', handleTouchEnd);
+  
+  // Adicionar event listeners
+  modalBoxElement.addEventListener('touchstart', handleTouchStart, { passive: false });
+  modalBoxElement.addEventListener('touchmove', handleTouchMove, { passive: false });
+  modalBoxElement.addEventListener('touchend', handleTouchEnd);
+}
+
+function handleTouchStart(e) {
+  if (!modal.classList.contains('active')) return;
+  
+  const touch = e.touches[0];
+  touchStartY = touch.clientY;
+  isSwiping = true;
+  if (modalBoxElement) {
+    modalBoxElement.classList.add('swiping');
+  }
+}
+
+function handleTouchMove(e) {
+  if (!isSwiping || !modal.classList.contains('active')) return;
+  
+  const touch = e.touches[0];
+  touchCurrentY = touch.clientY;
+  const diffY = touchCurrentY - touchStartY;
+  
+  // Só permite arrastar para BAIXO
+  if (diffY > 0) {
+    e.preventDefault();
+    
+    // Limita o arrasto máximo a 200px
+    const translateY = Math.min(diffY, 200);
+    if (modalBoxElement) {
+      modalBoxElement.style.transform = `translateY(${translateY}px)`;
+    }
+    
+    // Escurece o overlay conforme arrasta
+    const opacity = Math.max(0, 0.85 - (diffY / 800));
+    modal.style.background = `rgba(0,0,0,${opacity})`;
+  }
+}
+
+function handleTouchEnd(e) {
+  if (!isSwiping || !modal.classList.contains('active')) {
+    isSwiping = false;
+    return;
+  }
+  
+  const diffY = touchCurrentY - touchStartY;
+  
+  // Se arrastou mais de 80px, fecha o modal
+  if (diffY > 80) {
+    fecharModal();
+  }
+  
+  // Reseta as transformações
+  if (modalBoxElement) {
+    modalBoxElement.style.transform = '';
+    modalBoxElement.classList.remove('swiping');
+  }
+  
+  // Restaura o overlay
+  modal.style.background = '';
+  
+  isSwiping = false;
+  touchStartY = 0;
+  touchCurrentY = 0;
+}
+
 function abrirModalComIcon(icon, title, text, color) {
   modalIcon.innerHTML = icon;
   modalTitle.innerText = title;
   modalText.innerText = text;
   modalTitle.style.color = color;
   modal.classList.add("active");
+  
+  // Inicializar swipe to close quando o modal abrir
+  setTimeout(() => {
+    initSwipeToClose();
+  }, 50);
 }
 
 function fecharModal() {
   modal.classList.remove("active");
+  
+  // Resetar estilos do modal box
+  if (modalBoxElement) {
+    modalBoxElement.style.transform = '';
+    modalBoxElement.classList.remove('swiping');
+  }
+  
+  // Resetar overlay
+  modal.style.background = '';
+  
+  isSwiping = false;
+  touchStartY = 0;
+  touchCurrentY = 0;
 }
 
+// Fechar modal ao clicar no overlay
 modal.addEventListener("click", e => {
   if (e.target === modal) fecharModal();
+});
+
+// Inicializar swipe quando o DOM carregar
+document.addEventListener('DOMContentLoaded', function() {
+  initSwipeToClose();
 });
 
 // -------------------------------
@@ -319,14 +432,7 @@ linkInput.addEventListener("keypress", e => {
 // BOTÃO VERIFICAR
 verifyBtn.addEventListener("click", function(e) {
   createRipple(e, this);
-
-  // efeito de expansão
-  this.classList.add("btn-expanding");
-
-  setTimeout(() => {
-    this.classList.remove("btn-expanding");
-    verificarLink();
-  }, 380);
+  verificarLink();
 });
 
 // -------------------------------
