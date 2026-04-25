@@ -317,6 +317,17 @@ const observer = new IntersectionObserver(entries => {
 
 cards.forEach(card => observer.observe(card));
 
+// EFEITO TOQUE NOS CARDS (MOBILE)
+cards.forEach(card => {
+  card.addEventListener("touchstart", () => {
+    card.classList.add("touched");
+  }, { passive: true });
+
+  card.addEventListener("touchend", () => {
+    setTimeout(() => card.classList.remove("touched"), 300);
+  });
+});
+
 // -------------------------------
 // EFEITO 3D NOS CARDS
 // -------------------------------
