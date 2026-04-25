@@ -7,6 +7,18 @@ const verifyBtn = document.getElementById("verifyBtn");
 const linkInput = document.getElementById("linkInput");
 const pasteHint = document.getElementById("pasteHint");
 
+// PEGA O INPUT DA URL (INTERATIVO)
+const urlTextInput = document.getElementById("urlText");
+
+// PERMITE EDITAR O TEXTO DA URL (já está funcionando, mas vamos garantir)
+if (urlTextInput) {
+  urlTextInput.addEventListener("keypress", function(e) {
+    if (e.key === "Enter") {
+      this.blur(); // tira o foco ao apertar Enter
+    }
+  });
+}
+
 // -------------------------------
 // COLAR OU CLICAR
 // -------------------------------
@@ -16,7 +28,7 @@ async function colarLink() {
     if (text && text.trim() !== "") {
       linkInput.value = text.trim();
       linkInput.focus();
-      pasteHint.classList.add("hidden");
+      if (pasteHint) pasteHint.classList.add("hidden");
 
       const box = document.getElementById("verifyBox");
       box.style.borderColor = "rgba(0,200,150,.9)";
@@ -36,13 +48,15 @@ async function colarLink() {
   }
 }
 
-linkInput.addEventListener("input", () => {
-  if (linkInput.value.trim() !== "") {
-    pasteHint.classList.add("hidden");
-  } else {
-    pasteHint.classList.remove("hidden");
-  }
-});
+if (linkInput) {
+  linkInput.addEventListener("input", () => {
+    if (linkInput.value.trim() !== "") {
+      if (pasteHint) pasteHint.classList.add("hidden");
+    } else {
+      if (pasteHint) pasteHint.classList.remove("hidden");
+    }
+  });
+}
 
 const sectionsMap = {
   inicio: document.getElementById("inicioSecao"),
@@ -178,20 +192,16 @@ function initSwipeToClose() {
   modalBoxElement = document.querySelector('.modal-box');
   if (!modalBoxElement) return;
 
-  // Adicionar indicador visual de swipe (apenas mobile)
-  const existingIndicator = document.querySelector('.modal-swipe-indicator');
-  if (!existingIndicator && window.innerWidth <= 480) {
+  if (!document.querySelector('.modal-swipe-indicator') && window.innerWidth <= 480) {
     const indicator = document.createElement('div');
     indicator.className = 'modal-swipe-indicator';
     modalBoxElement.insertBefore(indicator, modalBoxElement.firstChild);
   }
 
-  // Remover event listeners antigos para evitar duplicação
   modalBoxElement.removeEventListener('touchstart', handleTouchStart);
   modalBoxElement.removeEventListener('touchmove', handleTouchMove);
   modalBoxElement.removeEventListener('touchend', handleTouchEnd);
   
-  // Adicionar event listeners
   modalBoxElement.addEventListener('touchstart', handleTouchStart, { passive: false });
   modalBoxElement.addEventListener('touchmove', handleTouchMove, { passive: false });
   modalBoxElement.addEventListener('touchend', handleTouchEnd);
@@ -215,17 +225,14 @@ function handleTouchMove(e) {
   touchCurrentY = touch.clientY;
   const diffY = touchCurrentY - touchStartY;
   
-  // Só permite arrastar para BAIXO
   if (diffY > 0) {
     e.preventDefault();
     
-    // Limita o arrasto máximo a 200px
     const translateY = Math.min(diffY, 200);
     if (modalBoxElement) {
       modalBoxElement.style.transform = `translateY(${translateY}px)`;
     }
     
-    // Escurece o overlay conforme arrasta
     const opacity = Math.max(0, 0.85 - (diffY / 800));
     modal.style.background = `rgba(0,0,0,${opacity})`;
   }
@@ -239,18 +246,15 @@ function handleTouchEnd(e) {
   
   const diffY = touchCurrentY - touchStartY;
   
-  // Se arrastou mais de 80px, fecha o modal
   if (diffY > 80) {
     fecharModal();
   }
   
-  // Reseta as transformações
   if (modalBoxElement) {
     modalBoxElement.style.transform = '';
     modalBoxElement.classList.remove('swiping');
   }
   
-  // Restaura o overlay
   modal.style.background = '';
   
   isSwiping = false;
@@ -265,7 +269,6 @@ function abrirModalComIcon(icon, title, text, color) {
   modalTitle.style.color = color;
   modal.classList.add("active");
   
-  // Inicializar swipe to close quando o modal abrir
   setTimeout(() => {
     initSwipeToClose();
   }, 50);
@@ -274,13 +277,11 @@ function abrirModalComIcon(icon, title, text, color) {
 function fecharModal() {
   modal.classList.remove("active");
   
-  // Resetar estilos do modal box
   if (modalBoxElement) {
     modalBoxElement.style.transform = '';
     modalBoxElement.classList.remove('swiping');
   }
   
-  // Resetar overlay
   modal.style.background = '';
   
   isSwiping = false;
@@ -288,12 +289,10 @@ function fecharModal() {
   touchCurrentY = 0;
 }
 
-// Fechar modal ao clicar no overlay
 modal.addEventListener("click", e => {
   if (e.target === modal) fecharModal();
 });
 
-// Inicializar swipe quando o DOM carregar
 document.addEventListener('DOMContentLoaded', function() {
   initSwipeToClose();
 });
@@ -338,7 +337,6 @@ function verificarLink() {
   let score = 0;
   let motivos = [];
 
-  // Fontes confiáveis
   const confiaveis = [
     "g1.globo.com",
     "uol.com.br",
@@ -355,7 +353,6 @@ function verificarLink() {
     motivos.push("fonte reconhecida");
   }
 
-  // Encurtadores
   const encurtadores = [
     "bit.ly",
     "tinyurl.com",
@@ -368,7 +365,6 @@ function verificarLink() {
     motivos.push("link encurtado");
   }
 
-  // HTTPS
   if (url.protocol === "https:") {
     score += 1;
   } else {
@@ -376,7 +372,6 @@ function verificarLink() {
     motivos.push("sem HTTPS");
   }
 
-  // palavras suspeitas
   const suspeitas = [
     "urgente",
     "chocante",
@@ -393,13 +388,11 @@ function verificarLink() {
     }
   });
 
-  // domínio estranho
   if (dominio.includes("@") || dominio.split(".").length > 4) {
     score -= 2;
     motivos.push("domínio suspeito");
   }
 
-  // resultado
   if (score >= 4) {
     abrirModalComIcon(
       getIconSVG("safe"),
@@ -424,16 +417,18 @@ function verificarLink() {
   }
 }
 
-// ENTER NO INPUT
-linkInput.addEventListener("keypress", e => {
-  if (e.key === "Enter") verificarLink();
-});
+if (linkInput) {
+  linkInput.addEventListener("keypress", e => {
+    if (e.key === "Enter") verificarLink();
+  });
+}
 
-// BOTÃO VERIFICAR
-verifyBtn.addEventListener("click", function(e) {
-  createRipple(e, this);
-  verificarLink();
-});
+if (verifyBtn) {
+  verifyBtn.addEventListener("click", function(e) {
+    createRipple(e, this);
+    verificarLink();
+  });
+}
 
 // -------------------------------
 // EFEITO RIPPLE BOTÃO

@@ -1027,6 +1027,7 @@ nav a.active::after{width:100%;background:red;}
     border:1px solid rgba(255,255,255,.06);
     font-family:Roboto,sans-serif;
   }
+
   .url-bar svg{
     width:13px;
     height:13px;
@@ -1034,6 +1035,21 @@ nav a.active::after{width:100%;background:red;}
     fill:none;
     stroke-width:2;
     flex-shrink:0;
+  }
+
+  /* INPUT EDITÁVEL NA URL */
+  .url-text {
+    background: transparent;
+    border: none;
+    color: #8a8a9a;
+    font-size: 13px;
+    font-family: Roboto, sans-serif;
+    width: 100%;
+    padding: 0;
+    outline: none;
+  }
+  .url-text:focus {
+    color: #fff;
   }
 
   .alert-area{
