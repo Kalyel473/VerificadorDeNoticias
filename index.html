@@ -64,58 +64,33 @@ e ajude a combater a <span>desinformação</span>.
 </p>
 
 <!-- VERIFICAR -->
-<div class="verify-wrap">
-
-<div class="verify-label">
-<span class="verify-label-dot"></span>
-ANALISAR LINK
-</div>
-
-<div class="verify-box" id="verifyBox">
+<div class="verify-box">
 
 <div class="verify-input-group">
 
-<div class="verify-icon" id="pasteIconBtn" onclick="colarLink()" title="Colar link copiado">
+<div class="verify-icon">
 <svg viewBox="0 0 24 24">
-<rect x="9" y="2" width="6" height="4" rx="1" ry="1"/>
-<path d="M13 2H9a1 1 0 00-1 1v1H6a2 2 0 00-2 2v13a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-2V3a1 1 0 00-1-1z"/>
+<path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/>
+<path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/>
 </svg>
 </div>
 
 <input
 type="text"
 id="linkInput"
-placeholder="Cole aqui o link suspeito"
+placeholder="Cole o link aqui para verificar..."
 autocomplete="off"
 >
 
-<button id="verifyBtn">
+<button id="verifyBtn" onclick="verificarLink()">
 <svg viewBox="0 0 24 24">
 <circle cx="11" cy="11" r="8"/>
 <line x1="21" y1="21" x2="16.65" y2="16.65"/>
 </svg>
-<span>VERIFICAR</span>
+VERIFICAR
 </button>
 
 </div>
-
-</div>
-
-<div class="verify-hints">
-<span class="hint-tag">
-<svg viewBox="0 0 24 24"><path d="M9 12l2 2 4-4"/><path d="M12 2L4 5v6c0 5.25 3.5 10.15 8 11.35C16.5 21.15 20 16.25 20 11V5L12 2z"/></svg>
-Fontes confiáveis
-</span>
-<span class="hint-tag hint-tag--danger">
-<svg viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
-Encurtadores suspeitos
-</span>
-<span class="hint-tag hint-tag--warn">
-<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-Domínios estranhos
-</span>
-</div>
-
 </div>
 
 <div class="safe">
