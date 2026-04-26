@@ -1414,3 +1414,45 @@ nav a.active::after{width:100%;background:red;}
     cursor:default;
   }
 }
+
+.steps-guide {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin-bottom: 10px;
+  justify-content: center;
+  padding: 8px 0;
+  width: fit-content;
+}
+
+.step-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.step-num {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: 2px solid red;
+  color: red;
+  font-size: 16px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.step-text {
+  font-size: 16px;
+  color: rgba(255,255,255,0.75);
+  white-space: nowrap;
+}
+
+@media(min-width:1024px) {
+  .steps-guide {
+    justify-content: flex-start;
+  }
+}
