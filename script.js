@@ -64,9 +64,9 @@ async function colarLink() {
 // ÍCONES DO MODAL
 // -------------------------------
 function getModalIcon(type) {
-  if (type === "safe") return `<svg viewBox="0 0 48 48" width="56" height="56"><path d="M24 6L10 13v9c0 9.5 6 18.5 14 20 8-1.5 14-10.5 14-20v-9L24 6z" fill="rgba(0,200,150,0.15)" stroke="#00c896" stroke-width="2" stroke-linejoin="round"/><path d="M18 24l4 4 8-8" stroke="#00c896" stroke-width="3.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
-  if (type === "warning") return `<svg viewBox="0 0 48 48" width="56" height="56"><polygon points="24,8 44,40 4,40" fill="rgba(255,200,0,0.15)" stroke="#ffc107" stroke-width="2.5" stroke-linejoin="round"/><line x1="24" y1="18" x2="24" y2="30" stroke="#ffc107" stroke-width="3.5" stroke-linecap="round"/><circle cx="24" cy="36" r="2.5" fill="#ffc107"/></svg>`;
-  return `<svg viewBox="0 0 48 48" width="56" height="56"><path d="M24 6L6 12v9c0 10.5 7 20 18 22 11-2 18-11.5 18-22v-9L24 6z" fill="rgba(255,60,60,0.15)" stroke="#ff3b3b" stroke-width="2" stroke-linejoin="round"/><line x1="24" y1="18" x2="24" y2="30" stroke="#ff3b3b" stroke-width="3.5" stroke-linecap="round"/><circle cx="24" cy="36" r="2.5" fill="#ff3b3b"/></svg>`;
+  if (type === "safe") return `<svg viewBox="0 0 36 36" width="56" height="56"><path d="M18 3L6 8v9c0 7.88 5.14 15.27 12 17 6.86-1.73 12-9.12 12-17V8L18 3z" fill="#00c896" opacity=".18"/><path d="M18 3L6 8v9c0 7.88 5.14 15.27 12 17 6.86-1.73 12-9.12 12-17V8L18 3z" fill="none" stroke="#00c896" stroke-width="2"/><path d="M13 18l3.5 3.5L23 14" stroke="#00c896" stroke-width="2.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+  if (type === "warning") return `<svg viewBox="0 0 80 80" width="56" height="56"><polygon points="40,8 74,68 6,68" fill="rgba(255,204,0,.18)" stroke="#ffcc00" stroke-width="3"/><line x1="40" y1="28" x2="40" y2="50" stroke="#ffcc00" stroke-width="5" stroke-linecap="round"/><circle cx="40" cy="60" r="4" fill="#ffcc00"/></svg>`;
+  return `<svg viewBox="0 0 36 36" width="56" height="56"><path d="M18 3L6 8v9c0 7.88 5.14 15.27 12 17 6.86-1.73 12-9.12 12-17V8L18 3z" fill="red" opacity=".18"/><path d="M18 3L6 8v9c0 7.88 5.14 15.27 12 17 6.86-1.73 12-9.12 12-17V8L18 3z" fill="none" stroke="red" stroke-width="2"/><line x1="18" y1="12" x2="18" y2="21" stroke="red" stroke-width="3" stroke-linecap="round"/><circle cx="18" cy="26" r="2" fill="red"/></svg>`;
 }
 
 // -------------------------------
@@ -97,49 +97,221 @@ function fecharModal() {
 modal.addEventListener("click", e => { if (e.target === modal) fecharModal(); });
 
 // -------------------------------
+// EXTRAÇÃO DE TEXTO DO HTML
+// -------------------------------
+function extrairTextoHTML(html) {
+  const tmp = document.createElement("div");
+  tmp.innerHTML = html
+    .replace(/<script[\s\S]*?<\/script>/gi, "")
+    .replace(/<style[\s\S]*?<\/style>/gi, "")
+    .replace(/<nav[\s\S]*?<\/nav>/gi, "")
+    .replace(/<header[\s\S]*?<\/header>/gi, "")
+    .replace(/<footer[\s\S]*?<\/footer>/gi, "")
+    .replace(/<aside[\s\S]*?<\/aside>/gi, "")
+    .replace(/<form[\s\S]*?<\/form>/gi, "")
+    .replace(/<[^>]+>/g, " ");
+  return tmp.textContent.replace(/\s+/g, " ").trim().slice(0, 8000);
+}
+
+// -------------------------------
+// ANÁLISE DE TEXTO
+// -------------------------------
+function analisarTextoCompleto(texto) {
+  const t = texto.toLowerCase();
+  const palavras = t.split(/\s+/).filter(Boolean);
+  const total = palavras.length;
+  const fatores = [];
+
+  const maiusculas = (texto.match(/[A-ZÁÉÍÓÚÀÃÕÂÊÔ]{4,}/g) || []).length;
+  if (maiusculas >= 5) fatores.push({ peso: -3, texto: `Excesso de letras maiúsculas (${maiusculas} ocorrências)` });
+  else if (maiusculas >= 2) fatores.push({ peso: -1, texto: "Uso de maiúsculas em bloco detectado" });
+
+  const exclamacoes = (texto.match(/!/g) || []).length;
+  if (exclamacoes >= 4) fatores.push({ peso: -2, texto: `Pontuação excessiva: ${exclamacoes} exclamações` });
+  else if (exclamacoes >= 2) fatores.push({ peso: -1, texto: "Múltiplas exclamações detectadas" });
+  if ((texto.match(/\?/g) || []).length >= 4) fatores.push({ peso: -1, texto: "Muitas perguntas retóricas" });
+
+  const sensacional = ["urgente","imperdível","chocante","inacreditável","bomba","revelado","vazado","censurado","milagre","exclusivo","segredo","espalhe","compartilhe agora","antes que apaguem","governo esconde","médicos odeiam","eles não querem que você saiba","viralizou","nunca antes visto","assustador","confirmado agora","proibido","ninguém acredita","isso mudou tudo","chocou o brasil"];
+  const sensEnc = sensacional.filter(p => t.includes(p));
+  if (sensEnc.length >= 3) fatores.push({ peso: -3, texto: `Linguagem fortemente sensacionalista: "${sensEnc.slice(0, 3).join('", "')}"` });
+  else if (sensEnc.length >= 1) fatores.push({ peso: -2, texto: `Termos sensacionalistas: "${sensEnc.join('", "')}"` });
+
+  const fontesPadroes = ["segundo","de acordo com","conforme","afirmou","declarou","disse","informou","relatou","apurou","publicou","divulgou","noticiou","pesquisa","estudo","levantamento","ministério","secretaria","especialistas afirmam","cientistas"];
+  const fontesEnc = fontesPadroes.filter(p => t.includes(p)).length;
+  if (fontesEnc === 0 && total > 80) fatores.push({ peso: -3, texto: "Nenhuma fonte citada" });
+  else if (fontesEnc >= 3) fatores.push({ peso: 2, texto: `Múltiplas fontes citadas (${fontesEnc} referências)` });
+  else if (fontesEnc >= 1) fatores.push({ peso: 1, texto: "Ao menos uma fonte é citada no texto" });
+
+  const apelMedo = ["cuidado","perigo","atenção","alerta","grave","sérios riscos","todos serão afetados","isso vai te matar","pode matar","risco de morte","acorde","estão te enganando","não deixe seus filhos","o fim","apocalipse","colapso","golpe","ditadura","invasão"];
+  const medoEnc = apelMedo.filter(p => t.includes(p));
+  if (medoEnc.length >= 3) fatores.push({ peso: -3, texto: `Forte apelo ao medo: "${medoEnc.slice(0, 3).join('", "')}"` });
+  else if (medoEnc.length >= 1) fatores.push({ peso: -1, texto: `Apelo emocional ao medo: "${medoEnc[0]}"` });
+
+  const temData = /\b(janeiro|fevereiro|março|abril|maio|junho|julho|agosto|setembro|outubro|novembro|dezembro|\d{1,2}\/\d{1,2}\/\d{2,4}|20\d\d|ontem|hoje|esta semana|este mês)\b/i.test(texto);
+  if (!temData && total > 100) fatores.push({ peso: -2, texto: "Ausência de datas ou contexto temporal" });
+  else if (temData) fatores.push({ peso: 1, texto: "Referência temporal presente no texto" });
+
+  const temAutor = /\b(redação|por |repórter|jornalista|editor|equipe|staff|correspondent)\b/i.test(texto);
+  if (!temAutor && total > 80) fatores.push({ peso: -1, texto: "Autoria não identificada no conteúdo" });
+  else if (temAutor) fatores.push({ peso: 1, texto: "Autoria ou veículo identificado" });
+
+  const absolutos = ["todo mundo sabe","todos concordam","é fato que","ninguém pode negar","ficou provado","já está comprovado","100%","absolutamente certo","definitivamente","sem sombra de dúvida","é mentira que","não existe"];
+  const absEnc = absolutos.filter(p => t.includes(p));
+  if (absEnc.length >= 2) fatores.push({ peso: -2, texto: `Generalizações absolutas: "${absEnc.slice(0, 2).join('", "')}"` });
+  else if (absEnc.length === 1) fatores.push({ peso: -1, texto: `Afirmação absoluta sem evidência: "${absEnc[0]}"` });
+
+  const share = ["compartilhe","repasse","manda pra todo mundo","passa pra frente","mostre para","avise seus amigos","salva esse post","não deixa sumir","antes que deletem","copia e cola"];
+  const shareEnc = share.filter(p => t.includes(p));
+  if (shareEnc.length >= 1) fatores.push({ peso: -3, texto: `Pedido de compartilhamento urgente: "${shareEnc[0]}"` });
+
+  const conspiracao = ["élite","illuminati","deep state","estado profundo","nova ordem mundial","agenda oculta","querem te calar","supressão da verdade","grande reset","chip","implante","controle mental","5g mata","vacina mata","veneno na água","chemtrail"];
+  const conspEnc = conspiracao.filter(p => t.includes(p));
+  if (conspEnc.length >= 2) fatores.push({ peso: -4, texto: `Elementos de teoria da conspiração: "${conspEnc.slice(0, 2).join('", "')}"` });
+  else if (conspEnc.length === 1) fatores.push({ peso: -2, texto: `Referência a narrativa conspiratória: "${conspEnc[0]}"` });
+
+  const saudeFalsa = ["cura definitiva","cura o câncer","elimina o vírus","médicos estão escondendo","faz emagrecer","basta tomar","receita caseira","remédio natural","farmacêuticas não querem","proibido pela anvisa","proibido nos eua","funciona mesmo"];
+  const saudeEnc = saudeFalsa.filter(p => t.includes(p));
+  if (saudeEnc.length >= 1) fatores.push({ peso: -4, texto: `Alegação de saúde suspeita: "${saudeEnc[0]}"` });
+
+  const factcheck = ["agência lupa","aos fatos","boatos.org","e-farsas","snopes","politifact","fact.check","verificado por","fato ou fake","checamos","checagem"];
+  if (factcheck.filter(p => t.includes(p)).length >= 1) fatores.push({ peso: 2, texto: "Referência a agência de fact-checking detectada" });
+
+  const unicos = new Set(palavras).size;
+  const diversidade = total > 0 ? unicos / total : 0;
+  if (total > 100 && diversidade < 0.35) fatores.push({ peso: -1, texto: `Baixa diversidade vocabular (${Math.round(diversidade * 100)}%)` });
+  else if (total > 100 && diversidade > 0.6) fatores.push({ peso: 1, texto: `Boa diversidade vocabular (${Math.round(diversidade * 100)}%)` });
+
+  if (total < 60) fatores.push({ peso: -1, texto: "Texto muito curto" });
+  else if (total > 300) fatores.push({ peso: 1, texto: "Texto extenso" });
+
+  const polarizacao = ["comunista","fascista","nazista","esquerdista","direitista","lula ladrão","bolsominion","petralha","golpista","milícia","bandido vermelho","coxinha","mortadela"];
+  const polEnc = polarizacao.filter(p => t.includes(p));
+  if (polEnc.length >= 2) fatores.push({ peso: -2, texto: `Linguagem política polarizada: "${polEnc.slice(0, 2).join('", "')}"` });
+
+  return { score: fatores.reduce((s, f) => s + f.peso, 0), fatores, totalPalavras: total };
+}
+
+// -------------------------------
+// ANÁLISE DE DOMÍNIO
+// -------------------------------
+function analisarDominio(url) {
+  const dominio = url.hostname.toLowerCase();
+  const partes = dominio.split(".");
+  let score = 0, fatores = [];
+
+  const confiaveis = ["g1.globo.com","uol.com.br","bbc.com","bbc.co.uk","cnn.com","reuters.com","apnews.com","gov.br","folha.uol.com.br","estadao.com.br","oglobo.globo.com","correiobraziliense.com.br","agenciabrasil.ebc.com.br","ibge.gov.br","portal.fiocruz.br","veja.abril.com.br","exame.com","valor.com.br","gazetadopovo.com.br","terra.com.br"];
+  const tldSuspeitos = [".xyz",".top",".click",".tk",".ml",".ga",".cf",".pw",".gq",".icu",".buzz",".cc",".ws",".monster",".cyou",".cfd",".bond"];
+  const encurtadores = ["bit.ly","tinyurl.com","cutt.ly","ow.ly","t.co","goo.gl","rb.gy","linktr.ee"];
+
+  if (url.protocol === "https:") { score += 1; }
+  else { score -= 1; fatores.push({ peso: -1, texto: "Site sem HTTPS" }); }
+
+  if (confiaveis.some(s => dominio === s || dominio.endsWith("." + s))) {
+    score += 4; fatores.push({ peso: 4, texto: `Domínio reconhecido como confiável: ${dominio}` });
+  }
+  if (encurtadores.some(s => dominio === s)) {
+    score -= 2; fatores.push({ peso: -2, texto: "Link encurtado" });
+  }
+  if (tldSuspeitos.some(t => dominio.endsWith(t))) {
+    score -= 2; fatores.push({ peso: -2, texto: `Extensão de domínio de alto risco: .${partes[partes.length - 1]}` });
+  }
+  if (/^\d{1,3}(\.\d{1,3}){3}$/.test(dominio)) {
+    score -= 3; fatores.push({ peso: -3, texto: "Endereço IP direto em vez de domínio" });
+  }
+  if (partes.length > 4) {
+    score -= 1; fatores.push({ peso: -1, texto: `Subdomínios excessivos (${partes.length} níveis)` });
+  }
+
+  return { score, fatores };
+}
+
+// -------------------------------
+// VEREDICTO
+// -------------------------------
+function calcVeredicto(score) {
+  if (score >= 5) return { tipo: "safe",    titulo: "Provavelmente Confiável", cor: "#00c896" };
+  if (score >= 2) return { tipo: "warning", titulo: "Requer Atenção",         cor: "#ffcc00" };
+  if (score >= -2) return { tipo: "warning", titulo: "Conteúdo Suspeito",     cor: "#ff8c00" };
+  return             { tipo: "danger",  titulo: "Alto Risco de Fake News",    cor: "#ff3b3b" };
+}
+
+// -------------------------------
 // VERIFICAÇÃO
 // -------------------------------
-function verificarLink() {
+async function verificarLink() {
   let valor = linkInput.value.trim();
   if (valor === "") { abrirModalComDetalhes("warning", "Campo vazio", ["Cole um link antes de verificar."], "#ffcc00"); return; }
 
   verifyBtn.classList.add("loading");
+  verifyBtn.textContent = "Analisando...";
 
-  setTimeout(() => {
+  if (!/^https?:\/\//i.test(valor)) valor = "https://" + valor;
+
+  let url;
+  try { url = new URL(valor); } catch {
     verifyBtn.classList.remove("loading");
+    verifyBtn.textContent = "VERIFICAR";
+    abrirModalComDetalhes("warning", "Link inválido", ["O endereço não parece válido.", "Verifique se está completo."], "#ffcc00");
+    return;
+  }
 
-    let url, temHttp = false;
-    try {
-      if (!valor.startsWith("http://") && !valor.startsWith("https://")) { valor = "https://" + valor; }
-      else { temHttp = true; }
-      url = new URL(valor);
-    } catch {
-      abrirModalComDetalhes("warning", "Link inválido", ["O endereço não parece válido.", "Verifique se está completo."], "#ffcc00");
-      return;
-    }
+  let textoExtraido = "";
+  const _msgs = ["Verificando domínio…", "Analisando conteúdo…", "Quase lá…"];
+  let _msgIdx = 0;
+  const _msgTimer = setInterval(() => {
+    if (++_msgIdx < _msgs.length) verifyBtn.textContent = _msgs[_msgIdx];
+  }, 1500);
 
-    const dominio = url.hostname.toLowerCase();
-    const full = valor.toLowerCase();
-    let score = 0, motivos = [];
+  try {
+    const controller = new AbortController();
+    const _timeoutId = setTimeout(() => controller.abort(), 5000);
+    const proxy = "https://api.allorigins.win/get?url=" + encodeURIComponent(valor);
+    const resp = await fetch(proxy, { signal: controller.signal });
+    clearTimeout(_timeoutId);
+    const json = await resp.json();
+    textoExtraido = extrairTextoHTML(json.contents || "");
+  } catch (e) {
+    console.warn("Falha ao buscar conteúdo:", e);
+  } finally {
+    clearInterval(_msgTimer);
+  }
 
-    if (["g1.globo.com","uol.com.br","bbc.com","gov.br","reuters.com","apnews.com","folha.uol.com.br","estadao.com.br"].some(s => dominio.includes(s))) { score += 4; motivos.push("Fonte reconhecida e respeitada"); }
-    if (["bit.ly","tinyurl.com","ow.ly","cutt.ly"].some(s => dominio.includes(s))) { score -= 3; motivos.push("Link encurtado (pode esconder destino)"); }
-    if (temHttp && url.protocol === "https:") { score += 1; motivos.push("Conexão segura (HTTPS)"); }
-    else if (temHttp) { score -= 1; motivos.push("Sem HTTPS — dados podem ser interceptados"); }
-    ["urgente","chocante","compartilhe","milagre","segredo","vazado"].forEach(p => {
-      if (full.includes(p)) { score -= 1; motivos.push(`Palavra sensacionalista: "${p}"`); }
-    });
-    if (dominio.includes("@") || dominio.split(".").length > 4) { score -= 2; motivos.push("Domínio com estrutura estranha ou suspeita"); }
+  const domRes = analisarDominio(url);
+  let scoreTotal = domRes.score;
+  let fatoresCombinados = [...domRes.fatores];
+  let totalPalavras = 0;
 
-    if (score >= 4) abrirModalComDetalhes("safe", "Fonte Confiável", motivos.length ? motivos : ["Nenhum sinal de perigo encontrado."], "#00c896");
-    else if (score >= 1) abrirModalComDetalhes("warning", "Requer Atenção", motivos.length ? motivos : ["Tome cuidado, mas não é claramente falso."], "#ffcc00");
-    else abrirModalComDetalhes("danger", "Possível Fake News", motivos.length ? motivos : ["Vários sinais suspeitos detectados."], "#ff3b3b");
+  if (textoExtraido.length > 200) {
+    const textoRes = analisarTextoCompleto(textoExtraido);
+    scoreTotal += textoRes.score;
+    fatoresCombinados = [...fatoresCombinados, ...textoRes.fatores];
+    totalPalavras = textoRes.totalPalavras;
+  } else {
+    fatoresCombinados.push({ peso: 0, texto: "Conteúdo não extraído — análise baseada no domínio" });
+  }
 
-  }, 700);
+  const veredicto = calcVeredicto(scoreTotal);
+
+  const negativos = fatoresCombinados.filter(f => f.peso < 0).map(f => f.texto);
+  const positivos = fatoresCombinados.filter(f => f.peso > 0).map(f => `${f.texto}`);
+  const neutros   = fatoresCombinados.filter(f => f.peso === 0).map(f => f.texto);
+  const motivosArray = [
+    `Domínio: ${url.hostname}`,
+    totalPalavras ? `Palavras analisadas: ${totalPalavras}` : null,
+    ...negativos,
+    ...positivos,
+    ...neutros
+  ].filter(Boolean);
+
+  verifyBtn.classList.remove("loading");
+  verifyBtn.textContent = "VERIFICAR";
+
+  abrirModalComDetalhes(veredicto.tipo, veredicto.titulo, motivosArray, veredicto.cor);
 }
 
 if (linkInput) linkInput.addEventListener("keypress", e => { if (e.key === "Enter") verificarLink(); });
 if (verifyBtn) verifyBtn.addEventListener("click", verificarLink);
+
 // -------------------------------
 // ANIMAÇÃO DOS CARDS
 // -------------------------------
