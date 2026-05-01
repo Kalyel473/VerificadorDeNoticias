@@ -44,9 +44,9 @@ Abra o arquivo `index.html` diretamente no navegador. Nenhuma dependência extra
 
 ## Tecnologias Utilizadas
 
-- **HTML5** — Estrutura da aplicação
-- **CSS3** — Estilização e responsividade
-- **JavaScript** — Lógica de verificação de URLs
+- **HTML5** - Estrutura da aplicação
+- **CSS3** - Estilização e responsividade
+- **JavaScript** - Lógica de verificação de URLs
 
 ---
 
